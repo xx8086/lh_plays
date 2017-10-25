@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		9D07E0A91FA04D0200EEB94A /* glbase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D07E0A71FA04D0200EEB94A /* glbase.cpp */; };
+		9D07E0BE1FA071D400EEB94A /* shapes.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9D07E0B11FA0710400EEB94A /* shapes.cc */; };
+		9D07E0C21FA071D400EEB94A /* advancing_front.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9D07E0B61FA0710400EEB94A /* advancing_front.cc */; };
+		9D07E0C41FA071D400EEB94A /* cdt.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9D07E0B81FA0710400EEB94A /* cdt.cc */; };
+		9D07E0C61FA071D400EEB94A /* sweep.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9D07E0BA1FA0710400EEB94A /* sweep.cc */; };
+		9D07E0C81FA071D400EEB94A /* sweep_context.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9D07E0BC1FA0710400EEB94A /* sweep_context.cc */; };
+		9D07E0CC1FA0723E00EEB94A /* lh2tri.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D07E0CA1FA0723E00EEB94A /* lh2tri.cpp */; };
+		9D07E0D81FA0870F00EEB94A /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0D71FA086F900EEB94A /* libglfw3.a */; };
+		9D07E0DA1FA0895400EEB94A /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0D91FA0894C00EEB94A /* AppKit.framework */; };
+		9D07E0DC1FA0896200EEB94A /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0DB1FA0895F00EEB94A /* IOKit.framework */; };
+		9D07E0DE1FA0897100EEB94A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0DD1FA0896E00EEB94A /* CoreGraphics.framework */; };
+		9D07E0E41FA08A7D00EEB94A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0E31FA08A7A00EEB94A /* CoreVideo.framework */; };
 		9DD86A7D1F9F340D002934AE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DD86A7C1F9F340D002934AE /* main.cpp */; };
 		9DD86A851F9F3A97002934AE /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD86A841F9F3A8C002934AE /* GLUT.framework */; };
 		9DD86A871F9F3AAB002934AE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD86A861F9F3AA6002934AE /* OpenGL.framework */; };
@@ -30,6 +41,27 @@
 /* Begin PBXFileReference section */
 		9D07E0A71FA04D0200EEB94A /* glbase.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = glbase.cpp; sourceTree = "<group>"; };
 		9D07E0A81FA04D0200EEB94A /* glbase.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = glbase.hpp; sourceTree = "<group>"; };
+		9D07E0B11FA0710400EEB94A /* shapes.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shapes.cc; sourceTree = "<group>"; };
+		9D07E0B21FA0710400EEB94A /* shapes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shapes.h; sourceTree = "<group>"; };
+		9D07E0B31FA0710400EEB94A /* utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
+		9D07E0B41FA0710400EEB94A /* poly2tri.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = poly2tri.h; sourceTree = "<group>"; };
+		9D07E0B61FA0710400EEB94A /* advancing_front.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = advancing_front.cc; sourceTree = "<group>"; };
+		9D07E0B71FA0710400EEB94A /* advancing_front.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = advancing_front.h; sourceTree = "<group>"; };
+		9D07E0B81FA0710400EEB94A /* cdt.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cdt.cc; sourceTree = "<group>"; };
+		9D07E0B91FA0710400EEB94A /* cdt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cdt.h; sourceTree = "<group>"; };
+		9D07E0BA1FA0710400EEB94A /* sweep.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sweep.cc; sourceTree = "<group>"; };
+		9D07E0BB1FA0710400EEB94A /* sweep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sweep.h; sourceTree = "<group>"; };
+		9D07E0BC1FA0710400EEB94A /* sweep_context.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sweep_context.cc; sourceTree = "<group>"; };
+		9D07E0BD1FA0710400EEB94A /* sweep_context.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sweep_context.h; sourceTree = "<group>"; };
+		9D07E0CA1FA0723E00EEB94A /* lh2tri.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh2tri.cpp; sourceTree = "<group>"; };
+		9D07E0CB1FA0723E00EEB94A /* lh2tri.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lh2tri.hpp; sourceTree = "<group>"; };
+		9D07E0D51FA086F900EEB94A /* glfw3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glfw3.h; sourceTree = "<group>"; };
+		9D07E0D61FA086F900EEB94A /* glfw3native.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = glfw3native.h; sourceTree = "<group>"; };
+		9D07E0D71FA086F900EEB94A /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libglfw3.a; sourceTree = "<group>"; };
+		9D07E0D91FA0894C00EEB94A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		9D07E0DB1FA0895F00EEB94A /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		9D07E0DD1FA0896E00EEB94A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9D07E0E31FA08A7A00EEB94A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		9DD86A791F9F340D002934AE /* tessel */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tessel; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DD86A7C1F9F340D002934AE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9DD86A841F9F3A8C002934AE /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -47,14 +79,72 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D07E0E41FA08A7D00EEB94A /* CoreVideo.framework in Frameworks */,
 				9DD86A851F9F3A97002934AE /* GLUT.framework in Frameworks */,
 				9DD86A871F9F3AAB002934AE /* OpenGL.framework in Frameworks */,
+				9D07E0D81FA0870F00EEB94A /* libglfw3.a in Frameworks */,
+				9D07E0DC1FA0896200EEB94A /* IOKit.framework in Frameworks */,
+				9D07E0DE1FA0897100EEB94A /* CoreGraphics.framework in Frameworks */,
+				9D07E0DA1FA0895400EEB94A /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9D07E0AF1FA0710400EEB94A /* poly2tri */ = {
+			isa = PBXGroup;
+			children = (
+				9D07E0B01FA0710400EEB94A /* common */,
+				9D07E0B41FA0710400EEB94A /* poly2tri.h */,
+				9D07E0B51FA0710400EEB94A /* sweep */,
+			);
+			path = poly2tri;
+			sourceTree = "<group>";
+		};
+		9D07E0B01FA0710400EEB94A /* common */ = {
+			isa = PBXGroup;
+			children = (
+				9D07E0B11FA0710400EEB94A /* shapes.cc */,
+				9D07E0B21FA0710400EEB94A /* shapes.h */,
+				9D07E0B31FA0710400EEB94A /* utils.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		9D07E0B51FA0710400EEB94A /* sweep */ = {
+			isa = PBXGroup;
+			children = (
+				9D07E0B61FA0710400EEB94A /* advancing_front.cc */,
+				9D07E0B71FA0710400EEB94A /* advancing_front.h */,
+				9D07E0B81FA0710400EEB94A /* cdt.cc */,
+				9D07E0B91FA0710400EEB94A /* cdt.h */,
+				9D07E0BA1FA0710400EEB94A /* sweep.cc */,
+				9D07E0BB1FA0710400EEB94A /* sweep.h */,
+				9D07E0BC1FA0710400EEB94A /* sweep_context.cc */,
+				9D07E0BD1FA0710400EEB94A /* sweep_context.h */,
+			);
+			path = sweep;
+			sourceTree = "<group>";
+		};
+		9D07E0D31FA086F900EEB94A /* glfw */ = {
+			isa = PBXGroup;
+			children = (
+				9D07E0D41FA086F900EEB94A /* GLFW */,
+				9D07E0D71FA086F900EEB94A /* libglfw3.a */,
+			);
+			path = glfw;
+			sourceTree = "<group>";
+		};
+		9D07E0D41FA086F900EEB94A /* GLFW */ = {
+			isa = PBXGroup;
+			children = (
+				9D07E0D51FA086F900EEB94A /* glfw3.h */,
+				9D07E0D61FA086F900EEB94A /* glfw3native.h */,
+			);
+			path = GLFW;
+			sourceTree = "<group>";
+		};
 		9DD86A701F9F340D002934AE = {
 			isa = PBXGroup;
 			children = (
@@ -75,6 +165,8 @@
 		9DD86A7B1F9F340D002934AE /* tessel */ = {
 			isa = PBXGroup;
 			children = (
+				9D07E0D31FA086F900EEB94A /* glfw */,
+				9D07E0AF1FA0710400EEB94A /* poly2tri */,
 				9DD86A7C1F9F340D002934AE /* main.cpp */,
 				9DD86A891F9F5617002934AE /* lake.cpp */,
 				9DD86A8A1F9F5617002934AE /* lake.hpp */,
@@ -83,6 +175,8 @@
 				9DD86A8F1F9F643B002934AE /* callbackproxy.h */,
 				9D07E0A71FA04D0200EEB94A /* glbase.cpp */,
 				9D07E0A81FA04D0200EEB94A /* glbase.hpp */,
+				9D07E0CA1FA0723E00EEB94A /* lh2tri.cpp */,
+				9D07E0CB1FA0723E00EEB94A /* lh2tri.hpp */,
 			);
 			path = tessel;
 			sourceTree = "<group>";
@@ -90,6 +184,10 @@
 		9DD86A831F9F3A8C002934AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9D07E0E31FA08A7A00EEB94A /* CoreVideo.framework */,
+				9D07E0DD1FA0896E00EEB94A /* CoreGraphics.framework */,
+				9D07E0DB1FA0895F00EEB94A /* IOKit.framework */,
+				9D07E0D91FA0894C00EEB94A /* AppKit.framework */,
 				9DD86A881F9F45A4002934AE /* GLKit.framework */,
 				9DD86A861F9F3AA6002934AE /* OpenGL.framework */,
 				9DD86A841F9F3A8C002934AE /* GLUT.framework */,
@@ -153,6 +251,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D07E0CC1FA0723E00EEB94A /* lh2tri.cpp in Sources */,
+				9D07E0BE1FA071D400EEB94A /* shapes.cc in Sources */,
+				9D07E0C21FA071D400EEB94A /* advancing_front.cc in Sources */,
+				9D07E0C41FA071D400EEB94A /* cdt.cc in Sources */,
+				9D07E0C61FA071D400EEB94A /* sweep.cc in Sources */,
+				9D07E0C81FA071D400EEB94A /* sweep_context.cc in Sources */,
 				9DD86A8B1F9F5617002934AE /* lake.cpp in Sources */,
 				9D07E0A91FA04D0200EEB94A /* glbase.cpp in Sources */,
 				9DD86A7D1F9F340D002934AE /* main.cpp in Sources */,
@@ -209,6 +313,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/tessel/glfw/";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/tessel/glfw/";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -256,6 +362,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/tessel/glfw/";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/tessel/glfw/";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
@@ -266,6 +374,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 9846B32FFU;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/glfw",
+					"$(PROJECT_DIR)/tessel/glfw",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -275,6 +388,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 9846B32FFU;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/glfw",
+					"$(PROJECT_DIR)/tessel/glfw",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

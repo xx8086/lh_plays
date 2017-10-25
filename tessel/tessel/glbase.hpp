@@ -17,7 +17,7 @@ class CGL
 {
 public:
     CGL();
-    ~CGL();
+    virtual ~CGL();
 public:
     virtual int run(int args, char *argv[]) = 0;
 };

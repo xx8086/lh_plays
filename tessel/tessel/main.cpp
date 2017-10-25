@@ -8,16 +8,20 @@
 
 #include "lake.hpp"
 #include "quad.hpp"
+#include "lh2tri.hpp"
+
 int main(int args, char *argv[])
 {
     CGL* cg = nullptr;
-    switch (0) {
+    switch (2) {
         case 0:
             cg = new CLake;
             break;
         case 1:
             cg = new CQuad;
             break;
+        case 2:
+            cg = new CLH2tri;
         default:
             break;
     }

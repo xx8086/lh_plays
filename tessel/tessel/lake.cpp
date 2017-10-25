@@ -115,10 +115,9 @@ void CLake::RenderScene()
             
             //指定奇数的轮廓为填充，偶数的轮廓是镂空的。这也是默认的设置
             //gluTessProperty(pTess, GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
-            //gluTessProperty(pTess, GLU_TESS_TOLERANCE, 0);
+            gluTessProperty(pTess, GLU_TESS_BOUNDARY_ONLY, GL_FALSE);
             
             gluTessBeginPolygon(pTess, NULL);
-            
             gluTessBeginContour(pTess);
             for (int i = 0; i < COAST_POINTS; ++i)
             {

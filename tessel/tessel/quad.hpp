@@ -30,7 +30,7 @@ private:
     static void CALLBACK errorCallback(GLenum errorCode);
     static void CALLBACK combineCallback(GLdouble coords[3],
                                   GLdouble *vertex_data[4],
-                                  GLfloat weight[4], GLdouble **dataOut );
+                                  GLfloat weight[4], GLdouble **dataOut);
 private:
     static GLdouble quad[12][3];
     
