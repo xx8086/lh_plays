@@ -9,11 +9,8 @@
 #ifndef quad_hpp
 #define quad_hpp
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <GLUT/glut.h>
-
-class CQuad
+#include "glbase.hpp"
+class CQuad :public CGL
 {
 public:
     CQuad();

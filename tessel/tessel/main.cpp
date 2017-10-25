@@ -10,8 +10,24 @@
 #include "quad.hpp"
 int main(int args, char *argv[])
 {
-    CQuad ck;
-    ck.run(args, argv);
+    CGL* cg = nullptr;
+    switch (0) {
+        case 0:
+            cg = new CLake;
+            break;
+        case 1:
+            cg = new CQuad;
+            break;
+        default:
+            break;
+    }
+    
+    cg->run(args, argv);
+    
+    if (nullptr != cg){
+        delete cg;
+        cg = nullptr;
+    }
     
     return 0;
 }

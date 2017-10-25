@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D07E0A91FA04D0200EEB94A /* glbase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D07E0A71FA04D0200EEB94A /* glbase.cpp */; };
 		9DD86A7D1F9F340D002934AE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DD86A7C1F9F340D002934AE /* main.cpp */; };
 		9DD86A851F9F3A97002934AE /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD86A841F9F3A8C002934AE /* GLUT.framework */; };
 		9DD86A871F9F3AAB002934AE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD86A861F9F3AA6002934AE /* OpenGL.framework */; };
@@ -27,6 +28,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9D07E0A71FA04D0200EEB94A /* glbase.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = glbase.cpp; sourceTree = "<group>"; };
+		9D07E0A81FA04D0200EEB94A /* glbase.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = glbase.hpp; sourceTree = "<group>"; };
 		9DD86A791F9F340D002934AE /* tessel */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tessel; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DD86A7C1F9F340D002934AE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9DD86A841F9F3A8C002934AE /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -78,6 +81,8 @@
 				9DD86A8C1F9F58DC002934AE /* quad.cpp */,
 				9DD86A8D1F9F58DC002934AE /* quad.hpp */,
 				9DD86A8F1F9F643B002934AE /* callbackproxy.h */,
+				9D07E0A71FA04D0200EEB94A /* glbase.cpp */,
+				9D07E0A81FA04D0200EEB94A /* glbase.hpp */,
 			);
 			path = tessel;
 			sourceTree = "<group>";
@@ -149,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DD86A8B1F9F5617002934AE /* lake.cpp in Sources */,
+				9D07E0A91FA04D0200EEB94A /* glbase.cpp in Sources */,
 				9DD86A7D1F9F340D002934AE /* main.cpp in Sources */,
 				9DD86A8E1F9F58DC002934AE /* quad.cpp in Sources */,
 			);
@@ -293,6 +299,7 @@
 				9DD86A821F9F340D002934AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

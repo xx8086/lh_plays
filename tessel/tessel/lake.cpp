@@ -10,7 +10,6 @@
 
 
 //外围轮廓线
-
 GLdouble CLake::vCoast[COAST_POINTS][3] = {{-70.0, 30.0, 0.0 },
     {-50.0, 30.0, 0.0 },
     {-50.0, 27.0, 0.0 },
@@ -187,7 +186,6 @@ int CLake::run(int args, char *argv[])
     glutAddMenuEntry("Complex", COMPLEX);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
     iMode = COMPLEX;
-    GL_POLYGON;
     SetupRC();
     glutMainLoop();
     return 0;

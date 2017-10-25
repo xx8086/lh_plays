@@ -9,10 +9,8 @@
 #ifndef lake_hpp
 #define lake_hpp
 
-#include <stdio.h>
-#include <GLUT/glut.h>
-
-class CLake
+#include "glbase.hpp"
+class CLake : public CGL
 {
 public:
     CLake();
