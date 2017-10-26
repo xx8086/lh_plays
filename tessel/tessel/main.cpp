@@ -9,6 +9,7 @@
 #include "lake.hpp"
 #include "quad.hpp"
 #include "lh2tri.hpp"
+#include "lh_base_shader_gl.hpp"
 
 int main(int args, char *argv[])
 {
@@ -22,6 +23,10 @@ int main(int args, char *argv[])
             break;
         case 2:
             cg = new CLH2tri;
+            break;
+        case 3:
+            cg = new CLhShaderGL;
+            break;
         default:
             break;
     }

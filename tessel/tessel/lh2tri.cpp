@@ -9,179 +9,101 @@
 #include "lh2tri.hpp"
 
 #include <cstdlib>
-#include "glfw/glfw3.h"
 #include <time.h>
 #include <fstream>
-#include <string>
 #include <sstream>
 #include <algorithm>
 #include <iterator>
 #include <iostream>
-using namespace std;
 
-using namespace p2t;
-
-
-#define COAST_POINTS 24
-#define LAKE_POINTS 4
-//外围轮廓线
-GLdouble vCoast[COAST_POINTS][3] = {{-70.0, 30.0, 0.0 },
-    {-50.0, 30.0, 0.0 },
-    {-50.0, 27.0, 0.0 },
-    { -5.0, 27.0, 0.0 },
-    {  0.0, 20.0, 0.0 },
-    {  8.0, 10.0, 0.0 },
-    { 12.0,  5.0, 0.0 },
-    { 10.0,  0.0, 0.0 },
-    { 15.0,-10.0, 0.0 },
-    { 20.0,-20.0, 0.0 },
-    { 20.0,-35.0, 0.0 },
-    { 10.0,-40.0, 0.0 },
-    {  0.0,-30.0, 0.0 },
-    { -5.0,-20.0, 0.0 },
-    {-12.0,-10.0, 0.0 },
-    {-13.0, -5.0, 0.0 },
-    {-12.0,  5.0, 0.0 },
-    {-20.0, 10.0, 0.0 },
-    {-30.0, 20.0, 0.0 },
-    {-40.0, 15.0, 0.0 },
-    {-50.0, 15.0, 0.0 },
-    {-55.0, 20.0, 0.0 },
-    {-60.0, 25.0, 0.0 },
-    {-70.0, 25.0, 0.0 }};
-
-//湖的轮廓线
-GLdouble vLake[LAKE_POINTS][3] = {{ 10.0, -20.0, 0.0 },
-    { 15.0, -25.0, 0.0 },
-    { 10.0, -30.0, 0.0 },
-    {  5.0, -25.0, 0.0 }};
-void Init();
-void ShutDown(int return_code);
-void MainLoop(const double zoom);
-void Draw(const double zoom);
-void DrawMap(const double zoom);
-void ConstrainedColor(bool constrain);
-double StringToDouble(const std::string& s);
-double Random(double (*fun)(double), double xmin, double xmax);
-double Fun(double x);
-
-/// Dude hole examples
-vector<Point*> CreateHeadHole();
-vector<Point*> CreateChestHole();
-
-float rotate_y = 0,
-rotate_z = 0;
-const float rotations_per_tick = .2;
-
-/// Screen center x
-double cx = 0.0;
-/// Screen center y
-double cy = 0.0;
-
-/// Constrained triangles
-vector<Triangle*> triangles;
-/// Triangle map
-list<Triangle*> map;
-/// Polylines
-vector< vector<Point*> > polylines;
-
-/// Draw the entire triangle map?
-bool draw_map = false;
-/// Create a random distribution of points?
-bool random_distribution = false;
-
-GLFWwindow* window = NULL;
-
-template <class C> void FreeClear( C & cntr ) {
-    for ( typename C::iterator it = cntr.begin();
-         it != cntr.end(); ++it ) {
-        delete * it;
-    }
-    cntr.clear();
-}
-
-int CLH2tri::run(int argc, char* argv[])
+void CLH2tri::Release()
 {
-    
-    int num_points = 0;
-    double max, min;
-    double zoom;
-    
-    zoom = 1;
-    cx = 0;
-    cy = 0;
-    
-    vector<p2t::Point*> polyline;
-    for(int i =0 ;i < COAST_POINTS; i++)
-    {
-        polyline.push_back(new Point(vCoast[i][0], vCoast[i][1]));
-        num_points++;
-    }
-    
-    cout << "Number of constrained edges = " << polyline.size() << endl;
-    polylines.push_back(polyline);
-    
-    Init();
-    
-    /*
-     * Perform triangulation!
-     */
-    
-    double init_time = glfwGetTime();
-    
-    /*
-     * STEP 1: Create CDT and add primary polyline
-     * NOTE: polyline must be a simple polygon. The polyline's points
-     * constitute constrained edges. No repeat points!!!
-     */
-    CDT* cdt = new CDT(polyline);
-    
-    /*
-     * STEP 2: Add holes or Steiner points if necessary
-     */
-    if(1) {
-        // Add head hole
-        vector<Point*> head_hole = CreateHeadHole();
-        num_points += head_hole.size();
-        cdt->AddHole(head_hole);
-        //// Add chest hole
-        //vector<Point*> chest_hole = CreateChestHole();
-        //num_points += chest_hole.size();
-        //cdt->AddHole(chest_hole);
-        polylines.push_back(head_hole);
-        //polylines.push_back(chest_hole);
-    }
-    
-    /*
-     * STEP 3: Triangulate!
-     */
-    cdt->Triangulate();
-    double dt = glfwGetTime() - init_time;
-    
-    triangles = cdt->GetTriangles();
-    map = cdt->GetMap();
-    
-    cout << "Number of points = " << num_points << endl;
-    cout << "Number of triangles = " << triangles.size() << endl;
-    cout << "Elapsed time (ms) = " << dt*1000.0 << endl;
-    
-    MainLoop(zoom);
-    
     // Cleanup
-    
-    delete cdt;
+    for(vector<CDT*>::iterator iter = vec_cdt.begin();
+        iter != vec_cdt.end();
+        iter++){
+        delete *iter;
+    }
+    vec_cdt.clear();
     
     // Free points
     for(int i = 0; i < polylines.size(); i++) {
         vector<Point*> poly = polylines[i];
         FreeClear(poly);
     }
+}
+
+int CLH2tri::run(int argc, char* argv[])
+{
+    int num_points = 0;
+    double max, min;
+    double zoom;
     
+    zoom = 1;
+    cx = 500;
+    cy = 400;
+    
+    vector<p2t::Point*> polyline;
+    string line;
+    ifstream myfile("/Users/baidu/lh_plays/tessel/a_pos.txt");
+    if (myfile.is_open()) {
+        while (!myfile.eof()) {
+            getline(myfile, line);
+            if (line.size() == 0) {
+                if (polyline.size() > 0)
+                {
+                    polylines.push_back(polyline);
+                    polyline.clear();
+                }
+                
+                continue;
+            }
+            istringstream iss(line);
+            vector<string> tokens;
+            copy(istream_iterator<string>(iss), istream_iterator<string>(),
+                 back_inserter<vector<string> >(tokens));
+            double x = StringToDouble(tokens[0]);
+            double y = StringToDouble(tokens[1]);
+            polyline.push_back(new Point(x, y));
+        }
+        myfile.close();
+    } else {
+        cout << "File not opened" << endl;
+    }
+    
+    if (polyline.size() > 0)
+    {
+        polylines.push_back(polyline);
+        polyline.clear();
+    }
+    Init();
+    
+    for(vector< vector<Point*> >::iterator iter = polylines.begin();
+        iter != polylines.end();
+        iter++){
+        
+        CDT* cdt = new CDT(*iter);
+        //if(0) {
+        // Add head hole
+        //vector<Point*> head_hole = CreateHeadHole();
+        //当前轮廓iter如果有洞head_hole，需要手动AddHole进来。
+        //cdt->AddHole(head_hole.size);
+        //polylines.push_back(head_hole);
+        //}
+        
+        cdt->Triangulate();
+        triangles.push_back(cdt->GetTriangles());
+        vec_cdt.push_back(cdt);
+    }
+    
+    MainLoop(zoom);
+    
+    Release();
     ShutDown(0);
     return 0;
 }
 
-void Init()
+void CLH2tri::Init()
 {
     const int window_width = 800,
     window_height = 600;
@@ -202,13 +124,13 @@ void Init()
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 }
 
-void ShutDown(int return_code)
+void CLH2tri::ShutDown(int return_code)
 {
     glfwTerminate();
     exit(return_code);
 }
 
-void MainLoop(const double zoom)
+void CLH2tri::MainLoop(const double zoom)
 {
     // the time of the previous frame
     double old_time = glfwGetTime();
@@ -217,36 +139,13 @@ void MainLoop(const double zoom)
     
     while (running) {
         glfwPollEvents();
-        
-        // calculate time elapsed, and the amount by which stuff rotates
-        double current_time = glfwGetTime(),
-        delta_rotate = (current_time - old_time) * rotations_per_tick * 360;
-        old_time = current_time;
-        
-        // escape to quit, arrow keys to rotate view
-        // Check if ESC key was pressed or window was closed
-        running = !glfwGetKey(window, GLFW_KEY_ESCAPE) && !glfwWindowShouldClose(window);
-        
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-            rotate_y += delta_rotate;
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-            rotate_y -= delta_rotate;
-        // z axis always rotates
-        rotate_z += delta_rotate;
-        
-        // Draw the scene
-        if (draw_map) {
-            DrawMap(zoom);
-        } else {
-            Draw(zoom);
-        }
-        
+        Draw(zoom);
         // swap back and front buffers
         glfwSwapBuffers(window);
     }
 }
 
-void ResetZoom(double zoom, double cx, double cy, double width, double height)
+void CLH2tri::ResetZoom(double zoom, double cx, double cy, double width, double height)
 {
     double left = -width / zoom;
     double right = width / zoom;
@@ -261,7 +160,7 @@ void ResetZoom(double zoom, double cx, double cy, double width, double height)
     // Reset ortho view
     glOrtho(left, right, bottom, top, 1, -1);
     glTranslatef(-cx, -cy, 0);
-    glScalef(10, 10, 10);
+    glScalef(scalae, scalae, scalae);
     glMatrixMode(GL_MODELVIEW);
     glDisable(GL_DEPTH_TEST);
     glLoadIdentity();
@@ -270,30 +169,34 @@ void ResetZoom(double zoom, double cx, double cy, double width, double height)
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Draw(const double zoom)
+void CLH2tri::Draw(const double zoom)
 {
     // reset zoom
     Point center = Point(cx, cy);
     ResetZoom(zoom, center.x, center.y, 800, 600);
-    for (int i = 0; i < triangles.size(); i++) {
-        Triangle& t = *triangles[i];
-        Point& a = *t.GetPoint(0);
-        Point& b = *t.GetPoint(1);
-        Point& c = *t.GetPoint(2);
-        
-        // Red
-        glColor3f(1, 0, 0);
-        
-        glBegin(GL_TRIANGLES);
-        glVertex2f(a.x, a.y);
-        glVertex2f(b.x, b.y);
-        glVertex2f(c.x, c.y);
-        glEnd();
+    glColor3f(1, 0, 0);
+    for(vector< vector<Triangle*> >::iterator iter = triangles.begin();
+        iter != triangles.end();
+        iter++){
+        int num = iter->size();
+        for (int i = 0; i < num; i++) {
+            Triangle& t = *(iter->at(i));
+            Point& a = *t.GetPoint(0);
+            Point& b = *t.GetPoint(1);
+            Point& c = *t.GetPoint(2);
+            
+            // Red
+            glBegin(GL_TRIANGLES);
+            glVertex2f(a.x, a.y);
+            glVertex2f(b.x, b.y);
+            glVertex2f(c.x, c.y);
+            glEnd();
+        }
     }
+    
     
     // green
     glColor3f(0, 1, 0);
-    
     for(int i = 0; i < polylines.size(); i++) {
         vector<Point*> poly = polylines[i];
         glBegin(GL_LINE_LOOP);
@@ -302,81 +205,10 @@ void Draw(const double zoom)
         }
         glEnd();
     }
-}
-
-void DrawMap(const double zoom)
-{
-    // reset zoom
-    Point center = Point(cx, cy);
-    
-    ResetZoom(zoom, center.x, center.y, 800, 600);
-    
-    list<Triangle*>::iterator it;
-    for (it = map.begin(); it != map.end(); it++) {
-        Triangle& t = **it;
-        Point& a = *t.GetPoint(0);
-        Point& b = *t.GetPoint(1);
-        Point& c = *t.GetPoint(2);
-        
-        ConstrainedColor(t.constrained_edge[2]);
-        glBegin(GL_LINES);
-        glVertex2f(a.x, a.y);
-        glVertex2f(b.x, b.y);
-        glEnd( );
-        
-        ConstrainedColor(t.constrained_edge[0]);
-        glBegin(GL_LINES);
-        glVertex2f(b.x, b.y);
-        glVertex2f(c.x, c.y);
-        glEnd( );
-        
-        ConstrainedColor(t.constrained_edge[1]);
-        glBegin(GL_LINES);
-        glVertex2f(c.x, c.y);
-        glVertex2f(a.x, a.y);
-        glEnd( );
-    }
-}
-
-void ConstrainedColor(bool constrain)
-{
-    if (constrain) {
-        // Green
-        glColor3f(0, 1, 0);
-    } else {
-        // Red
-        glColor3f(1, 0, 0);
-    }
-}
-
-vector<Point*> CreateHeadHole() {
-    
-    vector<Point*> head_hole;
-    for(int i =0 ;i < LAKE_POINTS; i++)
-    {
-        head_hole.push_back(new Point(vLake[i][0], vLake[i][1]));
-        //num_points++;
-    }
-    return head_hole;
-}
-
-vector<Point*> CreateChestHole() {
-    
-    vector<Point*> chest_hole;
-    chest_hole.push_back(new Point(320.72342,480));
-    chest_hole.push_back(new Point(338.90617,465.96863));
-    chest_hole.push_back(new Point(347.99754,480.61584));
-    chest_hole.push_back(new Point(329.8148,510.41534));
-    chest_hole.push_back(new Point(339.91632,480.11077));
-    chest_hole.push_back(new Point(334.86556,478.09046));
-    
-    return chest_hole;
     
 }
 
-
-
-double StringToDouble(const std::string& s)
+double CLH2tri::StringToDouble(const std::string& s)
 {
     std::istringstream i(s);
     double x;
@@ -385,12 +217,12 @@ double StringToDouble(const std::string& s)
     return x;
 }
 
-double Fun(double x)
+double CLH2tri::Fun(double x)
 {
     return 2.5 + sin(10 * x) / x;
 }
 
-double Random(double (*fun)(double), double xmin = 0, double xmax = 1)
+double CLH2tri::Random(double (*fun)(double), double xmin = 0, double xmax = 1)
 {
     static double (*Fun)(double) = NULL, YMin, YMax;
     static bool First = true;

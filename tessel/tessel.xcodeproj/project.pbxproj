@@ -19,6 +19,8 @@
 		9D07E0DC1FA0896200EEB94A /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0DB1FA0895F00EEB94A /* IOKit.framework */; };
 		9D07E0DE1FA0897100EEB94A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0DD1FA0896E00EEB94A /* CoreGraphics.framework */; };
 		9D07E0E41FA08A7D00EEB94A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0E31FA08A7A00EEB94A /* CoreVideo.framework */; };
+		9D47B4921FA1E46C00914530 /* lh_base_shader_gl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D47B4901FA1E46C00914530 /* lh_base_shader_gl.cpp */; };
+		9D47B4951FA1F3A900914530 /* glad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D47B4931FA1F3A900914530 /* glad.cpp */; };
 		9DD86A7D1F9F340D002934AE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DD86A7C1F9F340D002934AE /* main.cpp */; };
 		9DD86A851F9F3A97002934AE /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD86A841F9F3A8C002934AE /* GLUT.framework */; };
 		9DD86A871F9F3AAB002934AE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD86A861F9F3AA6002934AE /* OpenGL.framework */; };
@@ -62,6 +64,11 @@
 		9D07E0DB1FA0895F00EEB94A /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		9D07E0DD1FA0896E00EEB94A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9D07E0E31FA08A7A00EEB94A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		9D47B4901FA1E46C00914530 /* lh_base_shader_gl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh_base_shader_gl.cpp; sourceTree = "<group>"; };
+		9D47B4911FA1E46C00914530 /* lh_base_shader_gl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lh_base_shader_gl.hpp; sourceTree = "<group>"; };
+		9D47B4931FA1F3A900914530 /* glad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = glad.cpp; sourceTree = "<group>"; };
+		9D47B4941FA1F3A900914530 /* glad.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = glad.hpp; sourceTree = "<group>"; };
+		9DBDCBE51FA1F58A008764DC /* khrplatform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = khrplatform.h; sourceTree = "<group>"; };
 		9DD86A791F9F340D002934AE /* tessel */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tessel; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DD86A7C1F9F340D002934AE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9DD86A841F9F3A8C002934AE /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -177,6 +184,11 @@
 				9D07E0A81FA04D0200EEB94A /* glbase.hpp */,
 				9D07E0CA1FA0723E00EEB94A /* lh2tri.cpp */,
 				9D07E0CB1FA0723E00EEB94A /* lh2tri.hpp */,
+				9D47B4901FA1E46C00914530 /* lh_base_shader_gl.cpp */,
+				9D47B4911FA1E46C00914530 /* lh_base_shader_gl.hpp */,
+				9D47B4931FA1F3A900914530 /* glad.cpp */,
+				9D47B4941FA1F3A900914530 /* glad.hpp */,
+				9DBDCBE51FA1F58A008764DC /* khrplatform.h */,
 			);
 			path = tessel;
 			sourceTree = "<group>";
@@ -253,8 +265,10 @@
 			files = (
 				9D07E0CC1FA0723E00EEB94A /* lh2tri.cpp in Sources */,
 				9D07E0BE1FA071D400EEB94A /* shapes.cc in Sources */,
+				9D47B4921FA1E46C00914530 /* lh_base_shader_gl.cpp in Sources */,
 				9D07E0C21FA071D400EEB94A /* advancing_front.cc in Sources */,
 				9D07E0C41FA071D400EEB94A /* cdt.cc in Sources */,
+				9D47B4951FA1F3A900914530 /* glad.cpp in Sources */,
 				9D07E0C61FA071D400EEB94A /* sweep.cc in Sources */,
 				9D07E0C81FA071D400EEB94A /* sweep_context.cc in Sources */,
 				9DD86A8B1F9F5617002934AE /* lake.cpp in Sources */,
