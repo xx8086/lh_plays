@@ -18,7 +18,7 @@
 
 #include "lh_base_shader_gl.hpp"
 
-const char *vertexShaderSource = "#version 330 core\n"
+const char *vertexshader = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
 "uniform mat4 model;\n"
 "uniform mat4 view;\n"
@@ -27,18 +27,31 @@ const char *vertexShaderSource = "#version 330 core\n"
 "{\n"
 "   gl_Position = projection * view * model * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
 "}\0";
-const char *fragmentShader1Source = "#version 330 core\n"
+
+const char *frontfv = "#version 330 core\n"
 "out vec4 FragColor;\n"
 "void main()\n"
 "{\n"
-"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"   FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);\n"
+"}\n\0";
+
+const char *backfv = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"   FragColor = vec4(0.0f, 1.0f, 0.0f, 1.0f);\n"
+"}\n\0";
+
+const char *sidefv = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"   FragColor = vec4(0.0f, 0.0f, 1.0f, 1.0f);\n"
 "}\n\0";
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and
-    // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
 
@@ -49,11 +62,11 @@ CLhShaderGL::~CLhShaderGL()
 {}
 
 
-void CLhShaderGL::insertpoint(float x, float y, float z)
+void CLhShaderGL::insertpoint(vector<float>& triangles, float x, float y, float z)
 {
-    triangle_points.push_back(x);
-    triangle_points.push_back(y);
-    triangle_points.push_back(z);
+    triangles.push_back(x);
+    triangles.push_back(y);
+    triangles.push_back(z);
 }
 
 void CLhShaderGL::release()
@@ -72,8 +85,8 @@ void CLhShaderGL::release()
         FreeClear(poly);
     }
     
-    glDeleteVertexArrays(2, VAOs);
-    glDeleteBuffers(2, VBOs);
+    glDeleteVertexArrays(3, VAOs);
+    glDeleteBuffers(3, VBOs);
     glfwTerminate();
 }
 
@@ -103,9 +116,6 @@ bool CLhShaderGL::Init()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
-    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
@@ -130,21 +140,33 @@ bool CLhShaderGL::loopmain()
     return true;
 }
 
-bool CLhShaderGL::loadshader()
+void CLhShaderGL::linkshader(unsigned int& vs, unsigned int& fs, unsigned int& program, const char* strshader)
+{
+    fs = glCreateShader(GL_FRAGMENT_SHADER);
+    program = glCreateProgram();
+    
+    glShaderSource(fs, 1, &strshader, NULL);
+    glCompileShader(fs);
+    
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+}
+
+void CLhShaderGL::link()
 {
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    fragmentShaderOrange = glCreateShader(GL_FRAGMENT_SHADER); // the first fragment shader that outputs the
-    shaderProgramOrange = glCreateProgram();
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glShaderSource(vertexShader, 1, &vertexshader, NULL);
     glCompileShader(vertexShader);
-    glShaderSource(fragmentShaderOrange, 1, &fragmentShader1Source, NULL);
-    glCompileShader(fragmentShaderOrange);
-    // link the first program object
-    glAttachShader(shaderProgramOrange, vertexShader);
-    glAttachShader(shaderProgramOrange, fragmentShaderOrange);
-    glLinkProgram(shaderProgramOrange);
+    linkshader(vertexShader, fragmentShaderFront, shaderProgramFront, frontfv);
+    linkshader(vertexShader, fragmentShaderBack, shaderProgramBack, backfv);
+}
+
+bool CLhShaderGL::loadshader()
+{
+    link();
     
-    create_vertex_buffer(0.0f);
+    create_vertex_buffer(deep);
     //create_vertex_buffer_loacl();
     bind_vertex_buffer();
     
@@ -155,7 +177,7 @@ bool CLhShaderGL::loadshader()
 
 void CLhShaderGL::create_vertex_buffer(float deep)
 {
-    scalae = 0.0001f;
+    scalae = 0.01f;
     triangle_points.clear();
     for(vector< vector<Triangle*> >::iterator iter = triangles.begin();
         iter != triangles.end();
@@ -166,57 +188,76 @@ void CLhShaderGL::create_vertex_buffer(float deep)
             Point& a = *t.GetPoint(0);
             Point& b = *t.GetPoint(1);
             Point& c = *t.GetPoint(2);
-            insertpoint(a.x, a.y, deep);
-            insertpoint(b.x, b.y, deep);
-            insertpoint(c.x, c.y, deep);
-            printf("(%.2f,%.2f),(%.2f,%.2f),(%.2f,%.2f)\n",a.x, a.y, b.x, b.y, c.x, c.y);
+            insertpoint(triangle_points, a.x/64.0f, a.y/64.0f, 0.0f);
+            insertpoint(triangle_points, b.x/64.0f, b.y/64.0f, 0.0f);
+            insertpoint(triangle_points, c.x/64.0f, c.y/64.0f, 0.0f);
+            
+            insertpoint(back_triangle_points, a.x/64.0f, a.y/64.0f, -deep);
+            insertpoint(back_triangle_points, b.x/64.0f, b.y/64.0f, -deep);
+            insertpoint(back_triangle_points, c.x/64.0f, c.y/64.0f, -deep);
+            //printf("(%.2f,%.2f),(%.2f,%.2f),(%.2f,%.2f)\n",a.x, a.y, b.x, b.y, c.x, c.y);
         }
     }
 }
 
 void CLhShaderGL::create_vertex_buffer_loacl()
 {
-    float* point = twotriangle;
-    int size = 18;
-    scalae = 1.0f;
-    if(0)
-    {
-        size = 1026;
-        point = arzi;
-        scalae = 0.0001f;
-    }
+    int iszie = 1026;
     triangle_points.clear();
-    triangle_points.resize(size);
+    triangle_points.resize(iszie);
     memcpy(triangle_points.data(),
-           point,
+           arzi,
            triangle_points.size()*sizeof(float));
     
+    
+    back_triangle_points.clear();
+    back_triangle_points.resize(iszie);
+    memcpy(back_triangle_points.data(),
+           arzi,
+           back_triangle_points.size()*sizeof(float));
+    for(int i = 0; i < iszie; )
+    {
+        back_triangle_points[i+2] = -deep;
+        i += 3;
+    }
+}
+
+
+void CLhShaderGL::bindshader(unsigned int& vao, unsigned int& vbo, unsigned int size, const char* datas)
+{
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER,
+                 size,
+                 datas, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
 }
 
 void CLhShaderGL::bind_vertex_buffer()
 {
-    glGenVertexArrays(1, VAOs); // we can also generate multiple VAOs or buffers at the same time
-    glGenBuffers(1, VBOs);
-    glBindVertexArray(VAOs[0]);
+    glGenVertexArrays(3, VAOs);
+    glGenBuffers(3, VBOs);
     
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
-    glBufferData(GL_ARRAY_BUFFER,
-                 triangle_points.size() * sizeof(float),
-                 triangle_points.data(), GL_STATIC_DRAW);
+    bindshader(VAOs[0], VBOs[0], triangle_points.size()* sizeof(float), (const char*)triangle_points.data());
+    bindshader(VAOs[1], VBOs[1], back_triangle_points.size()* sizeof(float), (const char*)back_triangle_points.data());
+    
+}
+
+void CLhShaderGL::drawshader(unsigned int& fs, unsigned int& vao, unsigned int& vbo, unsigned int size)
+{
+    setcamera(fs);
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glDrawArrays(GL_TRIANGLES, 0, size);
 }
 
 void CLhShaderGL::draw()
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-
-    glUseProgram(shaderProgramOrange);
-    setcamera();
-    
-    glBindVertexArray(VAOs[0]);
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glDrawArrays(GL_TRIANGLES, 0, triangle_points.size());
+    drawshader(shaderProgramFront, VAOs[0], VBOs[0], triangle_points.size());
+    drawshader(shaderProgramBack, VAOs[1], VBOs[1], back_triangle_points.size());
     
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -300,8 +341,9 @@ float CLhShaderGL::str2f(const std::string& s)
     return x;
 }
 
-void CLhShaderGL::setcamera()
+void CLhShaderGL::setcamera(unsigned int pid)
 {
+    glUseProgram(pid);
     glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);
     glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
@@ -311,11 +353,11 @@ void CLhShaderGL::setcamera()
     projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f));
-    //model = glm::rotate(model, -10.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
     model = glm::scale(model, glm::vec3(scalae, scalae, scalae));
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgramOrange, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgramOrange, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgramOrange, "model"), 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(glGetUniformLocation(pid, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(pid, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(pid, "model"), 1, GL_FALSE, glm::value_ptr(model));
     //shaderProgramOrange
     
 }

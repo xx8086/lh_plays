@@ -22,19 +22,22 @@ public:
 public:
     int run(int args, char *argv[]);
 private:
-    void insertpoint(float x, float y, float z);
+    void insertpoint(vector<float>&, float x, float y, float z);
     void processInput(GLFWwindow *window);
     bool loadshader();
     void loaddatas();
     bool Init();
+    void link();
     bool loopmain();
     void release();
-    void setcamera();
+    void setcamera(unsigned int);
     void draw();
     void create_vertex_buffer(float deep);
     void bind_vertex_buffer();
     void create_vertex_buffer_loacl();
-    
+    void linkshader(unsigned int&, unsigned int&, unsigned int&, const char*);
+    void bindshader(unsigned int&, unsigned int&, unsigned int, const char*);
+    void drawshader(unsigned int&, unsigned int&, unsigned int&, unsigned int);
     float str2f(const std::string& s);
     template <class C> void FreeClear( C & cntr ) {
         for ( typename C::iterator it = cntr.begin();
@@ -63,6 +66,8 @@ private:
         float z[3];
     } VECTOR_3F;
     vector<float>   triangle_points;
+    vector<float>   back_triangle_points;
+    vector<float>   side_triangle_points;
     vector< vector<Triangle*> > triangles;
     vector<CDT*> vec_cdt;
     vector< vector<Point*> > polylines;
@@ -71,23 +76,20 @@ private:
     unsigned int SCR_HEIGHT = 600;
     
     
-    unsigned int VBOs[2];
-    unsigned int VAOs[2];
+    unsigned int VBOs[3];
+    unsigned int VAOs[3];
     GLFWwindow* window;
     
     unsigned int vertexShader;
-    unsigned int fragmentShaderOrange;
-    unsigned int shaderProgramOrange;
+    unsigned int fragmentShaderFront;
+    unsigned int fragmentShaderBack;
+    unsigned int fragmentShaderSide;
+    unsigned int shaderProgramFront;
+    unsigned int shaderProgramBack;
+    unsigned int shaderProgramSide;
     
-    float scalae = 1.0f;
-    float twotriangle[18] = {
-        -0.9f, -0.5f, 0.0f,  // left
-        -0.0f, -0.5f, 0.0f,  // right
-        -0.45f, 0.5f, 0.0f,  // top
-        0.0f, -0.5f, 0.0f,  // left
-        0.9f, -0.5f, 0.0f,  // right
-        0.45f, 0.5f, 0.0f   // top
-    };
+    float deep = 15.0f;
+    float scalae = 0.0001f;
     
     float arzi[1026] = {
         1348.80,18614.20,0.0, 3076.20,2361.80,0.0,6676.20,18614.20,0.0,
