@@ -33,16 +33,8 @@ void CLH2tri::Release()
     }
 }
 
-int CLH2tri::run(int argc, char* argv[])
+void CLH2tri::LoadDatas()
 {
-    int num_points = 0;
-    double max, min;
-    double zoom;
-    
-    zoom = 1;
-    cx = 500;
-    cy = 400;
-    
     vector<p2t::Point*> polyline;
     string line;
     ifstream myfile("/Users/baidu/lh_plays/tessel/a_pos.txt");
@@ -76,7 +68,7 @@ int CLH2tri::run(int argc, char* argv[])
         polylines.push_back(polyline);
         polyline.clear();
     }
-    Init();
+    
     
     for(vector< vector<Point*> >::iterator iter = polylines.begin();
         iter != polylines.end();
@@ -95,6 +87,21 @@ int CLH2tri::run(int argc, char* argv[])
         triangles.push_back(cdt->GetTriangles());
         vec_cdt.push_back(cdt);
     }
+}
+
+int CLH2tri::run(int argc, char* argv[])
+{
+    int num_points = 0;
+    double max, min;
+    double zoom;
+    
+    zoom = 1;
+    cx = 500;
+    cy = 400;
+    
+    LoadDatas();
+    Init();
+    
     
     MainLoop(zoom);
     
@@ -191,7 +198,10 @@ void CLH2tri::Draw(const double zoom)
             glVertex2f(b.x, b.y);
             glVertex2f(c.x, c.y);
             glEnd();
+            
+            printf("%.2f,%.2f,0.0, %.2f,%.2f,0.0,%.2f,%.2f,0.0,\n",a.x, a.y, b.x, b.y, c.x, c.y);
         }
+        
     }
     
     
@@ -216,45 +226,6 @@ double CLH2tri::StringToDouble(const std::string& s)
         return 0;
     return x;
 }
-
-double CLH2tri::Fun(double x)
-{
-    return 2.5 + sin(10 * x) / x;
-}
-
-double CLH2tri::Random(double (*fun)(double), double xmin = 0, double xmax = 1)
-{
-    static double (*Fun)(double) = NULL, YMin, YMax;
-    static bool First = true;
-    
-    // Initialises random generator for first call
-    if (First)
-    {
-        First = false;
-        srand((unsigned) time(NULL));
-    }
-    
-    // Evaluates maximum of function
-    if (fun != Fun)
-    {
-        Fun = fun;
-        YMin = 0, YMax = Fun(xmin);
-        for (int iX = 1; iX < RAND_MAX; iX++)
-        {
-            double X = xmin + (xmax - xmin) * iX / RAND_MAX;
-            double Y = Fun(X);
-            YMax = Y > YMax ? Y : YMax;
-        }
-    }
-    
-    // Gets random values for X & Y
-    double X = xmin + (xmax - xmin) * rand() / RAND_MAX;
-    double Y = YMin + (YMax - YMin) * rand() / RAND_MAX;
-    
-    // Returns if valid and try again if not valid
-    return Y < fun(X) ? X : Random(Fun, xmin, xmax);
-}
-
 
 CLH2tri::CLH2tri()
 {}

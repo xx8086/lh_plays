@@ -14,7 +14,7 @@
 int main(int args, char *argv[])
 {
     CGL* cg = nullptr;
-    switch (2) {
+    switch (3) {
         case 0:
             cg = new CLake;
             break;
