@@ -22,6 +22,7 @@ public:
 public:
     int run(int args, char *argv[]);
 private:
+    void que2tri(vector<float>&, float x, float y, float x0, float y0);
     void insertpoint(vector<float>&, float x, float y, float z);
     void processInput(GLFWwindow *window);
     bool loadshader();
@@ -32,6 +33,7 @@ private:
     void release();
     void setcamera(unsigned int);
     void draw();
+    void create_side();
     void create_vertex_buffer(float deep);
     void bind_vertex_buffer();
     void create_vertex_buffer_loacl();
@@ -49,18 +51,6 @@ private:
 private:
     typedef struct Vector3f{
         Vector3f(){};
-        Vector3f(Point a, Point b, Point c, float deep)
-        {
-            x[0] = a.x/64.0;
-            x[1] = a.y/64.0;
-            x[2] = deep;
-            y[0] = b.x/64.0;
-            y[1] = b.y/64.0;
-            y[2] = deep;
-            z[0] = c.x/64.0;
-            z[1] = c.y/64.0;
-            z[2] = deep;
-        };
         float x[3];
         float y[3];
         float z[3];
@@ -89,7 +79,7 @@ private:
     unsigned int shaderProgramSide;
     
     float deep = 15.0f;
-    float scalae = 0.0001f;
+    float scalae = 0.01f;
     
     float arzi[1026] = {
         1348.80,18614.20,0.0, 3076.20,2361.80,0.0,6676.20,18614.20,0.0,

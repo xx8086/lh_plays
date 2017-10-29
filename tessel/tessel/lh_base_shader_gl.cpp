@@ -160,6 +160,7 @@ void CLhShaderGL::link()
     glCompileShader(vertexShader);
     linkshader(vertexShader, fragmentShaderFront, shaderProgramFront, frontfv);
     linkshader(vertexShader, fragmentShaderBack, shaderProgramBack, backfv);
+    linkshader(vertexShader, fragmentShaderSide, shaderProgramSide, sidefv);
 }
 
 bool CLhShaderGL::loadshader()
@@ -177,7 +178,6 @@ bool CLhShaderGL::loadshader()
 
 void CLhShaderGL::create_vertex_buffer(float deep)
 {
-    scalae = 0.01f;
     triangle_points.clear();
     for(vector< vector<Triangle*> >::iterator iter = triangles.begin();
         iter != triangles.end();
@@ -240,7 +240,7 @@ void CLhShaderGL::bind_vertex_buffer()
     
     bindshader(VAOs[0], VBOs[0], triangle_points.size()* sizeof(float), (const char*)triangle_points.data());
     bindshader(VAOs[1], VBOs[1], back_triangle_points.size()* sizeof(float), (const char*)back_triangle_points.data());
-    
+    bindshader(VAOs[2], VBOs[2], side_triangle_points.size()* sizeof(float), (const char*)side_triangle_points.data());
 }
 
 void CLhShaderGL::drawshader(unsigned int& fs, unsigned int& vao, unsigned int& vbo, unsigned int size)
@@ -258,7 +258,7 @@ void CLhShaderGL::draw()
     glClear(GL_COLOR_BUFFER_BIT);
     drawshader(shaderProgramFront, VAOs[0], VBOs[0], triangle_points.size());
     drawshader(shaderProgramBack, VAOs[1], VBOs[1], back_triangle_points.size());
-    
+    drawshader(shaderProgramSide, VAOs[2], VBOs[2], side_triangle_points.size());
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -316,6 +316,43 @@ void CLhShaderGL::loaddatas()
         triangles.push_back(cdt->GetTriangles());
         vec_cdt.push_back(cdt);
     }
+    
+    create_side();
+}
+
+void CLhShaderGL::que2tri(vector<float>& vecs, float x, float y, float x0, float y0)
+{
+    glm::vec3 a(x, y, 0);
+    glm::vec3 b(x, y, -deep);
+    glm::vec3 c(x0, y0, -deep);
+    glm::vec3 d(x0, y0, 0);
+    insertpoint(vecs, a.x, a.y, a.z);
+    insertpoint(vecs, b.x, b.y, b.z);
+    insertpoint(vecs, c.x, c.y, c.z);
+    insertpoint(vecs, a.x, a.y, a.z);
+    insertpoint(vecs, c.x, c.y, c.z);
+    insertpoint(vecs, d.x, d.y, d.z);
+    
+}
+
+void CLhShaderGL::create_side()
+{
+    
+    for(vector< vector<Point*> >::iterator iter = polylines.begin();
+        iter != polylines.end();
+        iter++){
+        int nums = iter->size();
+        for(int i = 0; i < nums - 1; i++)
+        {
+            Point* current = iter->at(i);
+            Point* next = iter->at(i+1);
+            que2tri(side_triangle_points, current->x/64.0f, current->y/64.0f, next->x/64.0f, next->y/64.0f);
+        }
+        
+        Point* current = iter->at(nums - 1);
+        Point* next = iter->at(0);
+        que2tri(side_triangle_points, current->x, current->y, next->x, next->y);
+    }
 }
 
 int CLhShaderGL::run(int args, char **argv)
@@ -352,14 +389,13 @@ void CLhShaderGL::setcamera(unsigned int pid)
     glm::mat4 model;
     projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.0f));
-    model = glm::rotate(model, -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(0.0f, 0.0f, -4.0f));
+    model = glm::rotate(model, 45.0f, glm::vec3(0.0f, 1.0f, 1.0f));
     model = glm::scale(model, glm::vec3(scalae, scalae, scalae));
     glUniformMatrix4fv(glGetUniformLocation(pid, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(glGetUniformLocation(pid, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(pid, "model"), 1, GL_FALSE, glm::value_ptr(model));
     //shaderProgramOrange
-    
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
