@@ -6,16 +6,9 @@
 //  Copyright © 2017年 Liu,Han(ARL). All rights reserved.
 //
 #include "glad.hpp"
-#include <iostream>
-
-#include <fstream>
-#include <sstream>
-
-
 #include "../glm/glm.hpp"
 #include "../glm/gtc/matrix_transform.hpp"
 #include "../glm/gtc/type_ptr.hpp"
-
 #include "lh_base_shader_gl.hpp"
 
 const char *vertexshader = "#version 330 core\n"
@@ -61,40 +54,16 @@ CLhShaderGL::CLhShaderGL()
 CLhShaderGL::~CLhShaderGL()
 {}
 
-
-void CLhShaderGL::insertpoint(vector<float>& triangles, float x, float y, float z)
-{
-    triangles.push_back(x);
-    triangles.push_back(y);
-    triangles.push_back(z);
-}
-
 void CLhShaderGL::release()
 {
-    // Cleanup
-    for(vector<CDT*>::iterator iter = vec_cdt.begin();
-        iter != vec_cdt.end();
-        iter++){
-        delete *iter;
-    }
-    vec_cdt.clear();
-    
-    // Free points
-    for(int i = 0; i < polylines.size(); i++) {
-        vector<Point*> poly = polylines[i];
-        FreeClear(poly);
-    }
-    
-    glDeleteVertexArrays(3, VAOs);
-    glDeleteBuffers(3, VBOs);
+    glDeleteVertexArrays(3, _vaos);
+    glDeleteBuffers(3, _vbos);
     glfwTerminate();
 }
 
 bool CLhShaderGL::Init()
 {
     bool rt = true;
-    // glfw: initialize and configure
-    // ------------------------------
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -104,21 +73,18 @@ bool CLhShaderGL::Init()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
     
-    // glfw window creation
-    // --------------------
     window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
     {
-        std::cout << "Failed to create GLFW window" << std::endl;
+        printf("Failed to create GLFW window\n");
         glfwTerminate();
         return false;
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        printf("Failed to initialize GLAD\n");
         return false;
     };
     
@@ -129,14 +95,11 @@ bool CLhShaderGL::loopmain()
 {
     while (!glfwWindowShouldClose(window))
     {
-        // input
-        // -----
         processInput(window);
         draw();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    
     return true;
 }
 
@@ -155,71 +118,22 @@ void CLhShaderGL::linkshader(unsigned int& vs, unsigned int& fs, unsigned int& p
 
 void CLhShaderGL::link()
 {
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexshader, NULL);
-    glCompileShader(vertexShader);
-    linkshader(vertexShader, fragmentShaderFront, shaderProgramFront, frontfv);
-    linkshader(vertexShader, fragmentShaderBack, shaderProgramBack, backfv);
-    linkshader(vertexShader, fragmentShaderSide, shaderProgramSide, sidefv);
+    vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertex_shader, 1, &vertexshader, NULL);
+    glCompileShader(vertex_shader);
+    linkshader(vertex_shader, fragment_shader_front, shader_program_front, frontfv);
+    linkshader(vertex_shader, fragment_shader_back, shader_program_back, backfv);
+    linkshader(vertex_shader, fragment_shader_side, shader_program_side, sidefv);
 }
 
 bool CLhShaderGL::loadshader()
 {
     link();
-    
-    create_vertex_buffer(deep);
-    //create_vertex_buffer_loacl();
     bind_vertex_buffer();
     
     glEnableVertexAttribArray(0);
-    glBindVertexArray(0); // no need to unbind at all as we directly bind a different VAO the next few lines
+    glBindVertexArray(0);
     return true;
-}
-
-void CLhShaderGL::create_vertex_buffer(float deep)
-{
-    triangle_points.clear();
-    for(vector< vector<Triangle*> >::iterator iter = triangles.begin();
-        iter != triangles.end();
-        iter++){
-        int num = iter->size();
-        for (int i = 0; i < num; i++) {
-            Triangle& t = *(iter->at(i));
-            Point& a = *t.GetPoint(0);
-            Point& b = *t.GetPoint(1);
-            Point& c = *t.GetPoint(2);
-            insertpoint(triangle_points, a.x/64.0f, a.y/64.0f, 0.0f);
-            insertpoint(triangle_points, b.x/64.0f, b.y/64.0f, 0.0f);
-            insertpoint(triangle_points, c.x/64.0f, c.y/64.0f, 0.0f);
-            
-            insertpoint(back_triangle_points, a.x/64.0f, a.y/64.0f, -deep);
-            insertpoint(back_triangle_points, b.x/64.0f, b.y/64.0f, -deep);
-            insertpoint(back_triangle_points, c.x/64.0f, c.y/64.0f, -deep);
-            //printf("(%.2f,%.2f),(%.2f,%.2f),(%.2f,%.2f)\n",a.x, a.y, b.x, b.y, c.x, c.y);
-        }
-    }
-}
-
-void CLhShaderGL::create_vertex_buffer_loacl()
-{
-    int iszie = 1026;
-    triangle_points.clear();
-    triangle_points.resize(iszie);
-    memcpy(triangle_points.data(),
-           arzi,
-           triangle_points.size()*sizeof(float));
-    
-    
-    back_triangle_points.clear();
-    back_triangle_points.resize(iszie);
-    memcpy(back_triangle_points.data(),
-           arzi,
-           back_triangle_points.size()*sizeof(float));
-    for(int i = 0; i < iszie; )
-    {
-        back_triangle_points[i+2] = -deep;
-        i += 3;
-    }
 }
 
 
@@ -235,12 +149,18 @@ void CLhShaderGL::bindshader(unsigned int& vao, unsigned int& vbo, unsigned int 
 
 void CLhShaderGL::bind_vertex_buffer()
 {
-    glGenVertexArrays(3, VAOs);
-    glGenBuffers(3, VBOs);
+    glGenVertexArrays(3, _vaos);
+    glGenBuffers(3, _vbos);
     
-    bindshader(VAOs[0], VBOs[0], triangle_points.size()* sizeof(float), (const char*)triangle_points.data());
-    bindshader(VAOs[1], VBOs[1], back_triangle_points.size()* sizeof(float), (const char*)back_triangle_points.data());
-    bindshader(VAOs[2], VBOs[2], side_triangle_points.size()* sizeof(float), (const char*)side_triangle_points.data());
+    bindshader(_vaos[0], _vbos[0],
+               _generate_tri.get_front_buff_size(),
+               _generate_tri.get_front_buff());
+    bindshader(_vaos[1], _vbos[1],
+               _generate_tri.get_back_buff_size(),
+               _generate_tri.get_back_buff());
+    bindshader(_vaos[2], _vbos[2],
+               _generate_tri.get_side_buff_size(),
+               _generate_tri.get_side_buff());
 }
 
 void CLhShaderGL::drawshader(unsigned int& fs, unsigned int& vao, unsigned int& vbo, unsigned int size)
@@ -256,103 +176,14 @@ void CLhShaderGL::draw()
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    drawshader(shaderProgramFront, VAOs[0], VBOs[0], triangle_points.size());
-    drawshader(shaderProgramBack, VAOs[1], VBOs[1], back_triangle_points.size());
-    drawshader(shaderProgramSide, VAOs[2], VBOs[2], side_triangle_points.size());
+    drawshader(shader_program_front, _vaos[0], _vbos[0],
+               _generate_tri.get_front_buff_size()/sizeof(float));
+    drawshader(shader_program_back, _vaos[1], _vbos[1],
+               _generate_tri.get_back_buff_size()/sizeof(float));
+    drawshader(shader_program_side, _vaos[2], _vbos[2],
+               _generate_tri.get_side_buff_size()/sizeof(float));
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-void CLhShaderGL::loaddatas()
-{
-    vector<p2t::Point*> polyline;
-    string line;
-    ifstream myfile("/Users/baidu/lh_plays/tessel/a_pos.txt");
-    if (myfile.is_open()) {
-        while (!myfile.eof()) {
-            getline(myfile, line);
-            if (line.size() == 0) {
-                if (polyline.size() > 0)
-                {
-                    polylines.push_back(polyline);
-                    polyline.clear();
-                }
-                continue;
-            }
-            istringstream iss(line);
-            vector<string> tokens;
-            copy(istream_iterator<string>(iss), istream_iterator<string>(),
-                 back_inserter<vector<string> >(tokens));
-            double x = str2f(tokens[0]);
-            double y = str2f(tokens[1]);
-            polyline.push_back(new Point(x, y));
-        }
-        myfile.close();
-    } else {
-        cout << "File not opened" << endl;
-    }
-    
-    if (polyline.size() > 0)
-    {
-        polylines.push_back(polyline);
-        polyline.clear();
-    }
-    
-    
-    for(vector< vector<Point*> >::iterator iter = polylines.begin();
-        iter != polylines.end();
-        iter++){
-        
-        CDT* cdt = new CDT(*iter);
-        //if(0) {
-        // Add head hole
-        //vector<Point*> head_hole = CreateHeadHole();
-        //当前轮廓iter如果有洞head_hole，需要手动AddHole进来。
-        //cdt->AddHole(head_hole.size);
-        //polylines.push_back(head_hole);
-        //}
-        
-        cdt->Triangulate();
-        triangles.push_back(cdt->GetTriangles());
-        vec_cdt.push_back(cdt);
-    }
-    
-    create_side();
-}
-
-void CLhShaderGL::que2tri(vector<float>& vecs, float x, float y, float x0, float y0)
-{
-    glm::vec3 a(x, y, 0);
-    glm::vec3 b(x, y, -deep);
-    glm::vec3 c(x0, y0, -deep);
-    glm::vec3 d(x0, y0, 0);
-    insertpoint(vecs, a.x, a.y, a.z);
-    insertpoint(vecs, b.x, b.y, b.z);
-    insertpoint(vecs, c.x, c.y, c.z);
-    insertpoint(vecs, a.x, a.y, a.z);
-    insertpoint(vecs, c.x, c.y, c.z);
-    insertpoint(vecs, d.x, d.y, d.z);
-    
-}
-
-void CLhShaderGL::create_side()
-{
-    
-    for(vector< vector<Point*> >::iterator iter = polylines.begin();
-        iter != polylines.end();
-        iter++){
-        int nums = iter->size();
-        for(int i = 0; i < nums - 1; i++)
-        {
-            Point* current = iter->at(i);
-            Point* next = iter->at(i+1);
-            que2tri(side_triangle_points, current->x/64.0f, current->y/64.0f, next->x/64.0f, next->y/64.0f);
-        }
-        
-        Point* current = iter->at(nums - 1);
-        Point* next = iter->at(0);
-        que2tri(side_triangle_points, current->x, current->y, next->x, next->y);
-    }
 }
 
 int CLhShaderGL::run(int args, char **argv)
@@ -361,21 +192,12 @@ int CLhShaderGL::run(int args, char **argv)
         return 1;
     }
     
-    loaddatas();
+    _generate_tri.loaddatas();
     loadshader();
     loopmain();
     release();
     
     return 0;
-}
-
-float CLhShaderGL::str2f(const std::string& s)
-{
-    std::istringstream i(s);
-    float x;
-    if (!(i >> x))
-        return 0;
-    return x;
 }
 
 void CLhShaderGL::setcamera(unsigned int pid)
@@ -395,11 +217,8 @@ void CLhShaderGL::setcamera(unsigned int pid)
     glUniformMatrix4fv(glGetUniformLocation(pid, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(glGetUniformLocation(pid, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(pid, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    //shaderProgramOrange
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
 void CLhShaderGL::processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)

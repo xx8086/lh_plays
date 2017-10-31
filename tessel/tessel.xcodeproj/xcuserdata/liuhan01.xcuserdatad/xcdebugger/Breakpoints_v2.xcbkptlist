@@ -26,28 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "tessel/lh_base_shader_gl.cpp"
-            timestampString = "530801516.92586"
+            timestampString = "531155709.865943"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "317"
-            endingLineNumber = "317"
-            landmarkName = "CLhShaderGL::loaddatas()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "tessel/lh_base_shader_gl.cpp"
-            timestampString = "530801516.927285"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
-            landmarkName = "CLhShaderGL::create_vertex_buffer(float deep)"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
+            landmarkName = "CLhShaderGL::draw()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -70,16 +54,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "tessel/lh_base_shader_gl.cpp"
-            timestampString = "530801516.928766"
+            timestampString = "531155709.866841"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
-            landmarkName = "CLhShaderGL::create_vertex_buffer_loacl()"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "CLhShaderGL::run(int args, char **argv)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "tessel/lh_generate_tri.cpp"
+            timestampString = "531155709.867172"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "334"
+            endingLineNumber = "334"
+            landmarkName = "CGenerateTri::loaddatas()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
