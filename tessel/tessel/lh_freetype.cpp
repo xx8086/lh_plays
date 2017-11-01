@@ -20,7 +20,9 @@ CLFreetype::CLFreetype()
 {}
 
 CLFreetype::~CLFreetype()
-{}
+{
+    release_word();
+}
 
 bool CLFreetype::memory_face()
 {
@@ -54,10 +56,8 @@ bool CLFreetype::analy_charater(wchar_t& wch)
     assert(!_error);
     
     FT_GlyphSlot& slot = _face->glyph;
-    assert(!slot);
-    
-    process_contours(slot);
-    return true;
+    _beread = process_contours(slot);
+    return _beread;
 }
 
 bool CLFreetype::init_freetype()
@@ -76,20 +76,21 @@ bool CLFreetype::init_freetype()
     
     _error = FT_Set_Char_Size(_face, 0L, _pointsize * 64, _window_x, _window_y);
     assert(!_error);
-    
+
     return true;
 }
 
-void CLFreetype::front(A_CHAEACTER& aword)
+unsigned int CLFreetype::front(A_CHAEACTER& aword)
 {
-    make(aword, 1.0, 1, _front_outset);
+    return make(aword, 1.0, 1, _front_outset);
 }
-void CLFreetype::back(A_CHAEACTER& aword)
+unsigned int CLFreetype::back(A_CHAEACTER& aword)
 {
-    make(aword, -1.0, 2, _back_outset);
+    return make(aword, -1.0, 2, _back_outset);
 }
-void CLFreetype::side(A_CHAEACTER_QUAD& aword)
+unsigned int CLFreetype::side(A_CHAEACTER_QUAD& aword)
 {
+    unsigned int tol = 0;
     for(size_t c = 0; c < _contour_current_num; ++c)
     {
         const FTContour* contour = _contour_list[c];
@@ -119,13 +120,17 @@ void CLFreetype::side(A_CHAEACTER_QUAD& aword)
             }
         }
         
+        tol += quads.size();
         aword.push_back(quads);
         quads.clear();
     }
+
+    return tol;
 }
 
-void CLFreetype::make(A_CHAEACTER& aword, FTGL_DOUBLE znormal, int outsettype, float outsetsize)
+unsigned int CLFreetype::make(A_CHAEACTER& aword, FTGL_DOUBLE znormal, int outsettype, float outsetsize)
 {
+    unsigned int tol = 0;
     for(size_t c = 0; c < _contour_current_num; ++c)
     {
         switch(outsettype)
@@ -147,9 +152,12 @@ void CLFreetype::make(A_CHAEACTER& aword, FTGL_DOUBLE znormal, int outsettype, f
             }
             vecpoint.push_back(LFPoint(d[0], d[1]));
         }
+
+        tol += vecpoint.size();
         aword.push_back(vecpoint);
         vecpoint.clear();
     }
+    return tol;
 }
 
 void CLFreetype::release_word()
@@ -171,9 +179,10 @@ void CLFreetype::release_word()
     delete [] _contour_list;
     _contour_list = nullptr;
     _contour_current_num = 0;
+    _beread = false;
 }
 
-void CLFreetype::process_contours(FT_GlyphSlot& slot)
+bool CLFreetype::process_contours(FT_GlyphSlot& slot)
 {
     FT_Outline& outline = slot->outline;
     _contour_current_num = outline.n_contours;
@@ -258,5 +267,58 @@ void CLFreetype::process_contours(FT_GlyphSlot& slot)
         // 3. Make sure the glyph has the proper parity.
         c1->SetParity(parity);
     }
+
+    return true;
 }
 
+bool CLFreetype::set_fontfile(const char* fontfile)
+{
+    _str_ttf = fontfile;
+    return true;
+}
+void CLFreetype::set_sizeface(float fontsize)
+{
+    _pointsize = fontsize;
+}
+void CLFreetype::set_depth(float depth)
+{
+    _depth = depth;
+}
+void CLFreetype::set_outset(float front_outset, float back_outset)
+{
+    _front_outset = front_outset;
+    _back_outset = back_outset;
+}
+
+unsigned int CLFreetype::get_word_front(A_CHAEACTER& fontword)
+{
+    unsigned int rt = 0;
+    if (_beread){
+        rt = front(fontword);
+    }
+    return rt;
+}
+unsigned int CLFreetype::get_word_back(A_CHAEACTER& backword)
+{
+    unsigned int rt = 0;
+    if (_beread){
+        rt = back(backword);
+    }
+    return rt;
+}
+unsigned int CLFreetype::get_word_side(A_CHAEACTER_QUAD& sideword)
+{
+    unsigned int rt = 0;
+    if (_beread){
+        rt = side(sideword);
+    }
+    return rt;
+}
+
+bool CLFreetype::set_word(wchar_t&  wch)
+{
+    bool rt = false;
+    release_word();
+    rt = analy_charater(wch);
+    return rt;
+}

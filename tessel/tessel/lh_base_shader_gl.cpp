@@ -169,19 +169,17 @@ void CLhShaderGL::drawshader(unsigned int& fs, unsigned int& vao, unsigned int& 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glDrawArrays(GL_TRIANGLES, 0, size);
+    glDrawArrays(GL_LINE_LOOP, 0, size);
 }
 
 void CLhShaderGL::draw()
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    drawshader(shader_program_front, _vaos[0], _vbos[0],
-               _generate_tri.get_front_buff_size()/sizeof(float));
-    drawshader(shader_program_back, _vaos[1], _vbos[1],
-               _generate_tri.get_back_buff_size()/sizeof(float));
-    drawshader(shader_program_side, _vaos[2], _vbos[2],
-               _generate_tri.get_side_buff_size()/sizeof(float));
+    drawshader(shader_program_front, _vaos[0], _vbos[0], _generate_tri.get_front_buff_size()/sizeof(float));
+    //drawshader(shader_program_back, _vaos[1], _vbos[1], _generate_tri.get_back_buff_size()/sizeof(float));
+    //drawshader(shader_program_side, _vaos[2], _vbos[2], _generate_tri.get_side_buff_size()/sizeof(float));
+    
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -192,7 +190,9 @@ int CLhShaderGL::run(int args, char **argv)
         return 1;
     }
     
-    _generate_tri.loaddatas();
+    _generate_tri.set_fontfile("/Users/baidu/Microsoft_Yahei.ttf");
+    _generate_tri.load_freetype();
+    _generate_tri.insert_words(L"A", 1);
     loadshader();
     loopmain();
     release();
@@ -212,7 +212,7 @@ void CLhShaderGL::setcamera(unsigned int pid)
     projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, -4.0f));
-    model = glm::rotate(model, 45.0f, glm::vec3(0.0f, 1.0f, 1.0f));
+    //model = glm::rotate(model, 45.0f, glm::vec3(0.0f, 1.0f, 1.0f));
     model = glm::scale(model, glm::vec3(scalae, scalae, scalae));
     glUniformMatrix4fv(glGetUniformLocation(pid, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(glGetUniformLocation(pid, "view"), 1, GL_FALSE, glm::value_ptr(view));

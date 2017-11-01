@@ -43,19 +43,29 @@ public:
     CLFreetype();
     ~CLFreetype();
 public:
-    void get_word_front(wchar_t&, A_CHAEACTER&);
-    void get_word_side(wchar_t&, A_CHAEACTER&);
-private:
+    bool set_word(wchar_t&);
+    unsigned int get_word_front(A_CHAEACTER&);
+    unsigned int get_word_back(A_CHAEACTER&);
+    unsigned int get_word_side(A_CHAEACTER_QUAD&);
+    
     bool init_freetype();
+    bool set_fontfile(const char*);
+    void set_sizeface(float);
+    void set_depth(float);
+    void set_outset(float, float);
+
+    void release_word();
+    
+private:
     bool memory_face();
     bool analy_charater(wchar_t&);
     
-    void process_contours(FT_GlyphSlot& slot);
-    void front(A_CHAEACTER&);
-    void back(A_CHAEACTER&);
-    void side(A_CHAEACTER_QUAD&);
-    void make(A_CHAEACTER&, FTGL_DOUBLE, int, float);
-    void release_word();
+    bool process_contours(FT_GlyphSlot& slot);
+    unsigned int front(A_CHAEACTER&);
+    unsigned int back(A_CHAEACTER&);
+    unsigned int side(A_CHAEACTER_QUAD&);
+    unsigned int make(A_CHAEACTER&, FTGL_DOUBLE, int, float);
+
 private://动态的
     FTContour** _contour_list;
     int _contour_current_num = 0;
@@ -64,18 +74,20 @@ private://动态的
     unsigned int vscale;
     
 private://固定的
-    float _depth;
     FT_Error _error;
     FT_Library _library;
     FT_Face _face;
     unsigned int _window_x = 0;
     unsigned int _window_y = 0;
-    unsigned int _pointsize;
+
     std::string _str_ttf;
+    unsigned int _pointsize = 16;
+    unsigned int outset = 1.0;
+    float _front_outset = 1.0;
+    float _back_outset = 1.0;
+    float _depth = 3.0;
+    bool _beread = false;
     
-    unsigned int outset;
-    float _front_outset;
-    float _back_outset;
 };
 
 #endif /* lh_freetype_hpp */
