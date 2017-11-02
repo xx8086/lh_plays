@@ -131,9 +131,9 @@ unsigned int CLFreetype::side(A_CHAEACTER_QUAD& aword)
 
 unsigned int CLFreetype::make(A_CHAEACTER& aword, FTGL_DOUBLE znormal, int outsettype, float outsetsize)
 {
-    //char filename[128] = {0};
-    //sprintf(filename, "/Users/baidu/myfile2.txt_%d", outsettype);
-    //_ofile.open(filename);     //作为输出文件打开
+    char filename[128] = {0};
+    sprintf(filename, "/Users/baidu/myfile2.txt_%d", outsettype);
+    _ofile.open(filename);     //作为输出文件打开
     unsigned int tol = 0;
     for(size_t c = 0; c < _contour_current_num; ++c)
     {
@@ -155,15 +155,15 @@ unsigned int CLFreetype::make(A_CHAEACTER& aword, FTGL_DOUBLE znormal, int outse
                 case 0: default: d = contour->Point(p); break;
             }
             vecpoint.push_back(LFPoint(d[0], d[1]));
-            //_ofile<<d[0]<<" "<<d[1]<<" "<<d[2]<<std::endl;
+            _ofile<<d[0]<<" "<<d[1]<<" "<<d[2]<<std::endl;
         }
         
-        //_ofile<<std::endl;
+        _ofile<<std::endl;
         tol += vecpoint.size();
         aword.push_back(vecpoint);
         vecpoint.clear();
     }
-    //_ofile.close();
+    _ofile.close();
     return tol;
 }
 

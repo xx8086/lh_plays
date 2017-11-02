@@ -19,15 +19,15 @@
 		9D07E0DC1FA0896200EEB94A /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0DB1FA0895F00EEB94A /* IOKit.framework */; };
 		9D07E0DE1FA0897100EEB94A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0DD1FA0896E00EEB94A /* CoreGraphics.framework */; };
 		9D07E0E41FA08A7D00EEB94A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D07E0E31FA08A7A00EEB94A /* CoreVideo.framework */; };
-		9D47B4921FA1E46C00914530 /* lh_base_shader_gl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D47B4901FA1E46C00914530 /* lh_base_shader_gl.cpp */; };
 		9D47B4951FA1F3A900914530 /* glad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D47B4931FA1F3A900914530 /* glad.cpp */; };
-		9D562C5B1FA71D0100A9C0B3 /* lh_generate_tri.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D562C591FA71D0100A9C0B3 /* lh_generate_tri.cpp */; };
-		9D562C5E1FA71D7200A9C0B3 /* lh_freetype.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D562C5C1FA71D7200A9C0B3 /* lh_freetype.cpp */; };
 		9D562CC41FA85AA100A9C0B3 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D562CC21FA85A7000A9C0B3 /* libfreetype.a */; };
-		9D562CCA1FA87E2B00A9C0B3 /* ftcontour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D562CC81FA87E2B00A9C0B3 /* ftcontour.cpp */; };
 		9D562CCD1FA8C9CB00A9C0B3 /* libbz2.1.0.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D562CCC1FA8C9BF00A9C0B3 /* libbz2.1.0.5.tbd */; };
-		9D562CCF1FA8CA9A00A9C0B3 /* ftpoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D562CCE1FA8CA9A00A9C0B3 /* ftpoint.cpp */; };
 		9D562CD11FA8CAFA00A9C0B3 /* libz.1.2.8.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D562CD01FA8CAEB00A9C0B3 /* libz.1.2.8.tbd */; };
+		9D6C68FD1FAAF74A002BA972 /* lh_base_shader_gl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D6C68F71FAAF6AA002BA972 /* lh_base_shader_gl.cpp */; };
+		9D6C68FE1FAAF74C002BA972 /* ftcontour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D6C68F21FAAF6AA002BA972 /* ftcontour.cpp */; };
+		9D6C68FF1FAAF74F002BA972 /* ftpoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D6C68F41FAAF6AA002BA972 /* ftpoint.cpp */; };
+		9D6C69001FAAF751002BA972 /* lh_freetype.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D6C68F91FAAF6AA002BA972 /* lh_freetype.cpp */; };
+		9D6C69011FAAF753002BA972 /* lh_generate_tri.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D6C68FB1FAAF6AA002BA972 /* lh_generate_tri.cpp */; };
 		9DD86A7D1F9F340D002934AE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DD86A7C1F9F340D002934AE /* main.cpp */; };
 		9DD86A851F9F3A97002934AE /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD86A841F9F3A8C002934AE /* GLUT.framework */; };
 		9DD86A871F9F3AAB002934AE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DD86A861F9F3AA6002934AE /* OpenGL.framework */; };
@@ -324,14 +324,8 @@
 		9D32034A1FA3131A004BB23D /* vec3.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec3.hpp; sourceTree = "<group>"; };
 		9D32034B1FA3131A004BB23D /* vec4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec4.hpp; sourceTree = "<group>"; };
 		9D32034C1FA3131A004BB23D /* vector_relational.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vector_relational.hpp; sourceTree = "<group>"; };
-		9D47B4901FA1E46C00914530 /* lh_base_shader_gl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh_base_shader_gl.cpp; sourceTree = "<group>"; };
-		9D47B4911FA1E46C00914530 /* lh_base_shader_gl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lh_base_shader_gl.hpp; sourceTree = "<group>"; };
 		9D47B4931FA1F3A900914530 /* glad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = glad.cpp; sourceTree = "<group>"; };
 		9D47B4941FA1F3A900914530 /* glad.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = glad.hpp; sourceTree = "<group>"; };
-		9D562C591FA71D0100A9C0B3 /* lh_generate_tri.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh_generate_tri.cpp; sourceTree = "<group>"; };
-		9D562C5A1FA71D0100A9C0B3 /* lh_generate_tri.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lh_generate_tri.hpp; sourceTree = "<group>"; };
-		9D562C5C1FA71D7200A9C0B3 /* lh_freetype.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh_freetype.cpp; sourceTree = "<group>"; };
-		9D562C5D1FA71D7200A9C0B3 /* lh_freetype.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lh_freetype.hpp; sourceTree = "<group>"; };
 		9D562C651FA85A7000A9C0B3 /* ftconfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftconfig.h; sourceTree = "<group>"; };
 		9D562C661FA85A7000A9C0B3 /* ftheader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftheader.h; sourceTree = "<group>"; };
 		9D562C671FA85A7000A9C0B3 /* ftmodule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftmodule.h; sourceTree = "<group>"; };
@@ -425,13 +419,19 @@
 		9D562CC11FA85A7000A9C0B3 /* ft2build.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ft2build.h; sourceTree = "<group>"; };
 		9D562CC21FA85A7000A9C0B3 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfreetype.a; sourceTree = "<group>"; };
 		9D562CC31FA85A7000A9C0B3 /* libfreetyped.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfreetyped.a; sourceTree = "<group>"; };
-		9D562CC61FA87CA000A9C0B3 /* ftpoint.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ftpoint.hpp; sourceTree = "<group>"; };
-		9D562CC81FA87E2B00A9C0B3 /* ftcontour.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ftcontour.cpp; sourceTree = "<group>"; };
-		9D562CC91FA87E2B00A9C0B3 /* ftcontour.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ftcontour.hpp; sourceTree = "<group>"; };
-		9D562CCB1FA87E8600A9C0B3 /* ftvector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftvector.h; sourceTree = "<group>"; };
 		9D562CCC1FA8C9BF00A9C0B3 /* libbz2.1.0.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.5.tbd; path = usr/lib/libbz2.1.0.5.tbd; sourceTree = SDKROOT; };
-		9D562CCE1FA8CA9A00A9C0B3 /* ftpoint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ftpoint.cpp; sourceTree = "<group>"; };
 		9D562CD01FA8CAEB00A9C0B3 /* libz.1.2.8.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.8.tbd; path = usr/lib/libz.1.2.8.tbd; sourceTree = SDKROOT; };
+		9D6C68F21FAAF6AA002BA972 /* ftcontour.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ftcontour.cpp; sourceTree = "<group>"; };
+		9D6C68F31FAAF6AA002BA972 /* ftcontour.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ftcontour.hpp; sourceTree = "<group>"; };
+		9D6C68F41FAAF6AA002BA972 /* ftpoint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ftpoint.cpp; sourceTree = "<group>"; };
+		9D6C68F51FAAF6AA002BA972 /* ftpoint.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ftpoint.hpp; sourceTree = "<group>"; };
+		9D6C68F61FAAF6AA002BA972 /* ftvector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftvector.h; sourceTree = "<group>"; };
+		9D6C68F71FAAF6AA002BA972 /* lh_base_shader_gl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh_base_shader_gl.cpp; sourceTree = "<group>"; };
+		9D6C68F81FAAF6AA002BA972 /* lh_base_shader_gl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lh_base_shader_gl.hpp; sourceTree = "<group>"; };
+		9D6C68F91FAAF6AA002BA972 /* lh_freetype.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh_freetype.cpp; sourceTree = "<group>"; };
+		9D6C68FA1FAAF6AA002BA972 /* lh_freetype.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lh_freetype.hpp; sourceTree = "<group>"; };
+		9D6C68FB1FAAF6AA002BA972 /* lh_generate_tri.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh_generate_tri.cpp; sourceTree = "<group>"; };
+		9D6C68FC1FAAF6AA002BA972 /* lh_generate_tri.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lh_generate_tri.hpp; sourceTree = "<group>"; };
 		9DBDCBE51FA1F58A008764DC /* khrplatform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = khrplatform.h; sourceTree = "<group>"; };
 		9DD86A791F9F340D002934AE /* tessel */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tessel; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DD86A7C1F9F340D002934AE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -943,6 +943,22 @@
 			path = services;
 			sourceTree = "<group>";
 		};
+		9D6C68F11FAAF6AA002BA972 /* lh_3dfontkit */ = {
+			isa = PBXGroup;
+			children = (
+				9D6C68F21FAAF6AA002BA972 /* ftcontour.cpp */,
+				9D6C68F31FAAF6AA002BA972 /* ftcontour.hpp */,
+				9D6C68F41FAAF6AA002BA972 /* ftpoint.cpp */,
+				9D6C68F51FAAF6AA002BA972 /* ftpoint.hpp */,
+				9D6C68F61FAAF6AA002BA972 /* ftvector.h */,
+				9D6C68F91FAAF6AA002BA972 /* lh_freetype.cpp */,
+				9D6C68FA1FAAF6AA002BA972 /* lh_freetype.hpp */,
+				9D6C68FB1FAAF6AA002BA972 /* lh_generate_tri.cpp */,
+				9D6C68FC1FAAF6AA002BA972 /* lh_generate_tri.hpp */,
+			);
+			path = lh_3dfontkit;
+			sourceTree = "<group>";
+		};
 		9DD86A701F9F340D002934AE = {
 			isa = PBXGroup;
 			children = (
@@ -963,6 +979,9 @@
 		9DD86A7B1F9F340D002934AE /* tessel */ = {
 			isa = PBXGroup;
 			children = (
+				9D6C68F71FAAF6AA002BA972 /* lh_base_shader_gl.cpp */,
+				9D6C68F81FAAF6AA002BA972 /* lh_base_shader_gl.hpp */,
+				9D6C68F11FAAF6AA002BA972 /* lh_3dfontkit */,
 				9D562C611FA85A7000A9C0B3 /* freetype */,
 				9D32024C1FA3131A004BB23D /* glm */,
 				9D07E0D31FA086F900EEB94A /* glfw */,
@@ -977,20 +996,9 @@
 				9D07E0A81FA04D0200EEB94A /* glbase.hpp */,
 				9D07E0CA1FA0723E00EEB94A /* lh2tri.cpp */,
 				9D07E0CB1FA0723E00EEB94A /* lh2tri.hpp */,
-				9D47B4901FA1E46C00914530 /* lh_base_shader_gl.cpp */,
-				9D47B4911FA1E46C00914530 /* lh_base_shader_gl.hpp */,
 				9D47B4931FA1F3A900914530 /* glad.cpp */,
 				9D47B4941FA1F3A900914530 /* glad.hpp */,
 				9DBDCBE51FA1F58A008764DC /* khrplatform.h */,
-				9D562C591FA71D0100A9C0B3 /* lh_generate_tri.cpp */,
-				9D562C5A1FA71D0100A9C0B3 /* lh_generate_tri.hpp */,
-				9D562C5C1FA71D7200A9C0B3 /* lh_freetype.cpp */,
-				9D562C5D1FA71D7200A9C0B3 /* lh_freetype.hpp */,
-				9D562CC61FA87CA000A9C0B3 /* ftpoint.hpp */,
-				9D562CC81FA87E2B00A9C0B3 /* ftcontour.cpp */,
-				9D562CC91FA87E2B00A9C0B3 /* ftcontour.hpp */,
-				9D562CCB1FA87E8600A9C0B3 /* ftvector.h */,
-				9D562CCE1FA8CA9A00A9C0B3 /* ftpoint.cpp */,
 			);
 			path = tessel;
 			sourceTree = "<group>";
@@ -1067,22 +1075,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D562CCF1FA8CA9A00A9C0B3 /* ftpoint.cpp in Sources */,
 				9D07E0CC1FA0723E00EEB94A /* lh2tri.cpp in Sources */,
 				9D07E0BE1FA071D400EEB94A /* shapes.cc in Sources */,
-				9D562CCA1FA87E2B00A9C0B3 /* ftcontour.cpp in Sources */,
-				9D47B4921FA1E46C00914530 /* lh_base_shader_gl.cpp in Sources */,
 				9D07E0C21FA071D400EEB94A /* advancing_front.cc in Sources */,
-				9D562C5B1FA71D0100A9C0B3 /* lh_generate_tri.cpp in Sources */,
+				9D6C68FD1FAAF74A002BA972 /* lh_base_shader_gl.cpp in Sources */,
 				9D07E0C41FA071D400EEB94A /* cdt.cc in Sources */,
 				9D47B4951FA1F3A900914530 /* glad.cpp in Sources */,
+				9D6C69011FAAF753002BA972 /* lh_generate_tri.cpp in Sources */,
+				9D6C69001FAAF751002BA972 /* lh_freetype.cpp in Sources */,
+				9D6C68FE1FAAF74C002BA972 /* ftcontour.cpp in Sources */,
+				9D6C68FF1FAAF74F002BA972 /* ftpoint.cpp in Sources */,
 				9D07E0C61FA071D400EEB94A /* sweep.cc in Sources */,
 				9D07E0C81FA071D400EEB94A /* sweep_context.cc in Sources */,
 				9DD86A8B1F9F5617002934AE /* lake.cpp in Sources */,
 				9D07E0A91FA04D0200EEB94A /* glbase.cpp in Sources */,
 				9DD86A7D1F9F340D002934AE /* main.cpp in Sources */,
 				9DD86A8E1F9F58DC002934AE /* quad.cpp in Sources */,
-				9D562C5E1FA71D7200A9C0B3 /* lh_freetype.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
