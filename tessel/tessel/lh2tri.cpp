@@ -37,7 +37,7 @@ void CLH2tri::LoadDatas()
 {
     vector<p2t::Point*> polyline;
     string line;
-    ifstream myfile("/Users/baidu/lh_plays/tessel/a_pos.txt");
+    ifstream myfile("/Users/baidu/myfile2.txt_1");//a_pos.txt
     if (myfile.is_open()) {
         while (!myfile.eof()) {
             getline(myfile, line);

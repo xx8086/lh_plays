@@ -165,6 +165,7 @@ float* CGenerateTri::create_thri(float depth, A_CHAEACTER& points, unsigned int&
          iter++)
     {
         std::vector<p2t::Point *> vecpoly;
+        vecpoly.clear();
         for(std::vector<LFPoint>::iterator iterpoint = iter->begin();
         iter->end() != iterpoint;
         iterpoint++){

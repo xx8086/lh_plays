@@ -8,7 +8,6 @@
 
 #include "lh_freetype.hpp"
 #include <assert.h>
-#include <fstream>
 
 #define LFT_ERROR(err, cstr)\
 if (_error){\
@@ -52,7 +51,7 @@ bool CLFreetype::memory_face()
 bool CLFreetype::analy_charater(wchar_t& wch)
 {
     FT_UInt gindex = FT_Get_Char_Index(_face, wch);
-    _error = FT_Load_Glyph(_face, gindex, FT_LOAD_NO_BITMAP);
+    _error = FT_Load_Glyph(_face, gindex, FT_LOAD_NO_HINTING);
     assert(!_error);
     
     FT_GlyphSlot& slot = _face->glyph;
@@ -76,7 +75,9 @@ bool CLFreetype::init_freetype()
     
     _error = FT_Set_Char_Size(_face, 0L, _pointsize * 64, _window_x, _window_y);
     assert(!_error);
-
+    
+    _error = FT_Select_Charmap(_face, ft_encoding_unicode);
+    assert(!_error);
     return true;
 }
 
@@ -130,6 +131,9 @@ unsigned int CLFreetype::side(A_CHAEACTER_QUAD& aword)
 
 unsigned int CLFreetype::make(A_CHAEACTER& aword, FTGL_DOUBLE znormal, int outsettype, float outsetsize)
 {
+    //char filename[128] = {0};
+    //sprintf(filename, "/Users/baidu/myfile2.txt_%d", outsettype);
+    //_ofile.open(filename);     //作为输出文件打开
     unsigned int tol = 0;
     for(size_t c = 0; c < _contour_current_num; ++c)
     {
@@ -151,12 +155,15 @@ unsigned int CLFreetype::make(A_CHAEACTER& aword, FTGL_DOUBLE znormal, int outse
                 case 0: default: d = contour->Point(p); break;
             }
             vecpoint.push_back(LFPoint(d[0], d[1]));
+            //_ofile<<d[0]<<" "<<d[1]<<" "<<d[2]<<std::endl;
         }
-
+        
+        //_ofile<<std::endl;
         tol += vecpoint.size();
         aword.push_back(vecpoint);
         vecpoint.clear();
     }
+    //_ofile.close();
     return tol;
 }
 

@@ -14,6 +14,7 @@
 #include FT_STROKER_H
 #include "ftcontour.hpp"
 #include <vector>
+#include <fstream>
 
 typedef struct LFPoint
 {
@@ -67,7 +68,7 @@ private:
     unsigned int make(A_CHAEACTER&, FTGL_DOUBLE, int, float);
 
 private://动态的
-    FTContour** _contour_list;
+    FTContour** _contour_list = nullptr;
     int _contour_current_num = 0;
     int outflag;
     unsigned int hscale;
@@ -81,12 +82,14 @@ private://固定的
     unsigned int _window_y = 0;
 
     std::string _str_ttf;
-    unsigned int _pointsize = 16;
+    unsigned int _pointsize = 400;
     unsigned int outset = 1.0;
-    float _front_outset = 1.0;
+    float _front_outset = 0.8;
     float _back_outset = 1.0;
-    float _depth = 3.0;
+    float _depth = 19.0;
     bool _beread = false;
+    
+    std::ofstream _ofile;               //定义输出文件
     
 };
 

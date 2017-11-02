@@ -9,29 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "tessel/lh2tri.cpp"
-            timestampString = "530801516.9257"
+            filePath = "tessel/ftcontour.cpp"
+            timestampString = "531296608.983691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-            landmarkName = "CLH2tri::LoadDatas()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "tessel/lh2tri.cpp"
-            timestampString = "530801516.928648"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
-            landmarkName = "CLH2tri::Draw(const double zoom)"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "FTContour::AddFrontPoint(FTPoint point)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -53,7 +53,7 @@ private:
     unsigned int shader_program_back;
     unsigned int shader_program_side;
     
-    float scalae = 0.1f;
+    float scalae = 0.01f;
 };
 
 

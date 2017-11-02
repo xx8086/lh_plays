@@ -208,7 +208,10 @@ void FTContour::buildFrontOutset(float outset)
 {
     for(size_t i = 0; i < PointCount(); ++i)
     {
-        AddFrontPoint(Point(i) + Outset(i) * outset);
+        const FTPoint& cp = Point(i);
+        const FTPoint& out = Outset(i);
+        AddFrontPoint(cp + out * outset);
+        //AddFrontPoint(Point(i) + Outset(i) * outset);
     }
 }
 
