@@ -92,6 +92,8 @@ private:
     void que2tri(float* buffer, LFPoint3& a, LFPoint3& b, LFPoint3& c, LFPoint3& d);
     float* create_thri(float, A_CHAEACTER&, unsigned int&);
     float* create_side(A_CHAEACTER_QUAD&, unsigned int&);
+    void update_buff_datas();
+    void release_buff_datas();
 private:
     CLFreetype _lh_freetype;
     typedef std::pair<std::map<wchar_t, TRI_POINT*>::iterator,bool> PAIR_CHARACTER_BOOL;
@@ -101,7 +103,9 @@ private:
 
     typedef std::vector<TRI_POINT*> VEC_CHARACTERS;
     VEC_CHARACTERS _vec_charactes;
-
+    unsigned int _tol_bufflen[CHARACTE_COUNTS] = {0};
+    float* _tol_buff[CHARACTE_COUNTS] = {nullptr};
+    //const unsigned int _add_buffs = 1024;
     bool _show = false;
 };
 

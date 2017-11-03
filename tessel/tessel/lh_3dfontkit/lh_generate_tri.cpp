@@ -34,6 +34,8 @@ bool CGenerateTri::insert_words(wchar_t *pwch, int len)
     {
         insert_aword(pwch[i]);
     }
+    
+    update_buff_datas();
     return true;
 }
 
@@ -77,42 +79,40 @@ TRI_POINT *CGenerateTri::find_map(wchar_t wch)
 unsigned int CGenerateTri::get_front_buff_size()
 {
     unsigned int rt = 0;
-    rt = _vec_charactes.at(0)->bufflen[CHARACTE_FRONT];
-    rt *= sizeof(float);
+    rt = sizeof(float) * _tol_bufflen[CHARACTE_FRONT];
     return rt;
 }
 unsigned int CGenerateTri::get_back_buff_size()
 {
     unsigned int rt = 0;
-    rt = _vec_charactes.at(0)->bufflen[CHARACTE_BACK];
-    rt *= sizeof(float);
+    rt = sizeof(float) * _tol_bufflen[CHARACTE_BACK];
     return rt;
 }
 
 unsigned int CGenerateTri::get_side_buff_size()
 {
     unsigned int rt = 0;
-    rt = _vec_charactes.at(0)->bufflen[CHARACTE_SIDE];
-    rt *= sizeof(float);
+    rt = sizeof(float) * _tol_bufflen[CHARACTE_SIDE];
     return rt;
 }
 
 const char *CGenerateTri::get_front_buff()
 {
-    return (const char *)_vec_charactes.at(0)->buff[CHARACTE_FRONT];
+    return (const char *)_tol_buff[CHARACTE_FRONT];
 }
 const char *CGenerateTri::get_back_buff()
 {
-    return (const char *)_vec_charactes.at(0)->buff[CHARACTE_BACK];
+    return (const char *)_tol_buff[CHARACTE_BACK];
 }
 const char *CGenerateTri::get_side_buff()
 {
-    return (const char *)_vec_charactes.at(0)->buff[CHARACTE_SIDE];
+    return (const char *)_tol_buff[CHARACTE_SIDE];
 }
 
 void CGenerateTri::release()
 {
     clear();
+    release_buff_datas();
 }
 
 float CGenerateTri::str2f(const std::string &s)
@@ -147,6 +147,53 @@ bool CGenerateTri::insert_aword(wchar_t wch)
     }
     _vec_charactes.push_back(word_tri);
     return true;
+}
+
+void CGenerateTri::release_buff_datas()
+{
+    for (int  iter = CHARACTE_FRONT;
+        iter < CHARACTE_COUNTS;
+        iter++){
+        _tol_bufflen[iter] = 0;
+        if (nullptr != _tol_buff[iter]){
+            delete [] _tol_buff[iter];
+            _tol_buff[iter] = nullptr;
+        }
+    }
+}
+
+void CGenerateTri::update_buff_datas()
+{
+    release_buff_datas();
+    VEC_CHARACTERS::iterator iter_words = _vec_charactes.begin();
+    for (;
+        iter_words != _vec_charactes.end();
+         iter_words++){
+        _tol_bufflen[CHARACTE_FRONT] += (*iter_words)->bufflen[CHARACTE_FRONT];
+        _tol_bufflen[CHARACTE_BACK] += (*iter_words)->bufflen[CHARACTE_BACK];
+        _tol_bufflen[CHARACTE_SIDE] += (*iter_words)->bufflen[CHARACTE_SIDE];
+    }
+    
+    for (int  iter = CHARACTE_FRONT;
+         iter < CHARACTE_COUNTS;
+         iter++){
+        _tol_buff[iter] = new float[_tol_bufflen[iter]];
+    }
+    
+    unsigned int len[CHARACTE_COUNTS] = {0};
+    iter_words = _vec_charactes.begin();
+    for (;
+         iter_words != _vec_charactes.end();
+         iter_words++){
+        for (int  iter = CHARACTE_FRONT;
+             iter < CHARACTE_COUNTS;
+             iter++){
+            memcpy(_tol_buff[iter] + len[iter],
+                   (*iter_words)->buff[iter],
+                   sizeof(float)*(*iter_words)->bufflen[iter]);
+            len[iter] += (*iter_words)->bufflen[iter];
+        }
+    }
 }
 
 float *CGenerateTri::create_thri(float depth, A_CHAEACTER &points, unsigned int &counts)
