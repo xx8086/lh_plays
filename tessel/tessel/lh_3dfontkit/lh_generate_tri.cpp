@@ -249,7 +249,7 @@ TRI_POINT* CGenerateTri::insert_characte(wchar_t wch)
 
     TRI_POINT* word_tri = new TRI_POINT;
     word_tri->buff[CHARACTE_FRONT] = create_thri(0, fronts, frontpointsum);
-    word_tri->buff[CHARACTE_BACK] = create_thri(_depth, backs, backpointsum);
+    word_tri->buff[CHARACTE_BACK] = create_thri(-_depth, backs, backpointsum);
     word_tri->bufflen[CHARACTE_FRONT] = frontpointsum;
     word_tri->bufflen[CHARACTE_BACK] = backpointsum;
     

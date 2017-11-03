@@ -86,7 +86,7 @@ private://固定的
     unsigned int outset = 1.0;
     float _front_outset = 0.8;
     float _back_outset = 1.0;
-    float _depth = 9.0;
+    float _depth = 0.0;
     bool _beread = false;
     
     std::ofstream _ofile;               //定义输出文件

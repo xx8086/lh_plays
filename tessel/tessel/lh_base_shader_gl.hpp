@@ -32,7 +32,8 @@ private:
     void bind_vertex_buffer();
     void linkshader(unsigned int&, unsigned int&, unsigned int&, const char*);
     void bindshader(unsigned int&, unsigned int&, unsigned int, const char*);
-    void drawshader(unsigned int&, unsigned int&, unsigned int&, unsigned int);
+    void drawshader(unsigned int& fs, unsigned int& vao, unsigned int& vbo, unsigned int size,
+                    float r, float g, float b);
     
 private:
     CGenerateTri _generate_tri;

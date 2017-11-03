@@ -21,27 +21,13 @@ const char *vertexshader = "#version 330 core\n"
 "   gl_Position = projection * view * model * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
 "}\0";
 
-const char *frontfv = "#version 330 core\n"
+const char *fontfv = "#version 330 core\n"
 "out vec4 FragColor;\n"
+"uniform vec3 textColor;"
 "void main()\n"
 "{\n"
-"   FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);\n"
+"   FragColor = vec4(textColor, 1.0f);\n"
 "}\n\0";
-
-const char *backfv = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(0.0f, 1.0f, 0.0f, 1.0f);\n"
-"}\n\0";
-
-const char *sidefv = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(0.0f, 0.0f, 1.0f, 1.0f);\n"
-"}\n\0";
-
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -121,9 +107,9 @@ void CLhShaderGL::link()
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertexshader, NULL);
     glCompileShader(vertex_shader);
-    linkshader(vertex_shader, fragment_shader_front, shader_program_front, frontfv);
-    linkshader(vertex_shader, fragment_shader_back, shader_program_back, backfv);
-    linkshader(vertex_shader, fragment_shader_side, shader_program_side, sidefv);
+    linkshader(vertex_shader, fragment_shader_front, shader_program_front, fontfv);
+    linkshader(vertex_shader, fragment_shader_back, shader_program_back, fontfv);
+    linkshader(vertex_shader, fragment_shader_side, shader_program_side, fontfv);
 }
 
 bool CLhShaderGL::loadshader()
@@ -145,6 +131,8 @@ void CLhShaderGL::bindshader(unsigned int& vao, unsigned int& vbo, unsigned int 
                  size,
                  datas, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void CLhShaderGL::bind_vertex_buffer()
@@ -163,24 +151,36 @@ void CLhShaderGL::bind_vertex_buffer()
                _generate_tri.get_side_buff());
 }
 
-void CLhShaderGL::drawshader(unsigned int& fs, unsigned int& vao, unsigned int& vbo, unsigned int size)
+void CLhShaderGL::drawshader(unsigned int& fs, unsigned int& vao, unsigned int& vbo, unsigned int size,
+                             float r, float g, float b)
 {
     setcamera(fs);
+    glUniform3fv(glGetUniformLocation(fs, "textColor"), 1, value_ptr(glm::vec3(r, g, b)));
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glDrawArrays(GL_TRIANGLES, 0, size);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void CLhShaderGL::draw()
 {
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    drawshader(shader_program_back, _vaos[1], _vbos[1], _generate_tri.get_back_buff_size()/sizeof(float));//back
-    drawshader(shader_program_side, _vaos[2], _vbos[2], _generate_tri.get_side_buff_size()/sizeof(float));//side
-    drawshader(shader_program_front, _vaos[0], _vbos[0], _generate_tri.get_front_buff_size()/sizeof(float));//front
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    drawshader(shader_program_back, _vaos[1], _vbos[1],
+               _generate_tri.get_back_buff_size()/sizeof(float),
+               0.0, 0.0, 1.0);//back
+    
+    drawshader(shader_program_side, _vaos[2], _vbos[2],
+               _generate_tri.get_side_buff_size()/sizeof(float),
+               0.0, 1.0, 0.0);//side
+    
+    drawshader(shader_program_front, _vaos[0], _vbos[0],
+               _generate_tri.get_front_buff_size()/sizeof(float),
+               1.0, 0.0, 0.0);//front
 }
 
 int CLhShaderGL::run(int args, char **argv)
@@ -190,6 +190,7 @@ int CLhShaderGL::run(int args, char **argv)
     }
     
     _generate_tri.set_fontfile("/Users/baidu/Microsoft_Yahei.ttf");
+    _generate_tri.set_depth(19.0);
     _generate_tri.load_freetype();
     _generate_tri.insert_words(L"啊", 1);
     loadshader();

@@ -979,8 +979,6 @@
 		9DD86A7B1F9F340D002934AE /* tessel */ = {
 			isa = PBXGroup;
 			children = (
-				9D6C68F71FAAF6AA002BA972 /* lh_base_shader_gl.cpp */,
-				9D6C68F81FAAF6AA002BA972 /* lh_base_shader_gl.hpp */,
 				9D6C68F11FAAF6AA002BA972 /* lh_3dfontkit */,
 				9D562C611FA85A7000A9C0B3 /* freetype */,
 				9D32024C1FA3131A004BB23D /* glm */,
@@ -999,6 +997,8 @@
 				9D47B4931FA1F3A900914530 /* glad.cpp */,
 				9D47B4941FA1F3A900914530 /* glad.hpp */,
 				9DBDCBE51FA1F58A008764DC /* khrplatform.h */,
+				9D6C68F81FAAF6AA002BA972 /* lh_base_shader_gl.hpp */,
+				9D6C68F71FAAF6AA002BA972 /* lh_base_shader_gl.cpp */,
 			);
 			path = tessel;
 			sourceTree = "<group>";
