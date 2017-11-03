@@ -101,8 +101,7 @@ private:
 
     typedef std::vector<TRI_POINT*> VEC_CHARACTERS;
     VEC_CHARACTERS _vec_charactes;
-    
-    float _depth = 0.0f;
+
     bool _show = false;
 };
 

@@ -54,9 +54,8 @@ public:
     void set_sizeface(float);
     void set_depth(float);
     void set_outset(float, float);
-
     void release_word();
-    
+    float get_depth();
 private:
     bool memory_face();
     bool analy_charater(wchar_t&);
@@ -86,7 +85,7 @@ private://固定的
     unsigned int outset = 1.0;
     float _front_outset = 0.8;
     float _back_outset = 1.0;
-    float _depth = 0.0;
+    float _depth = 9.0;
     bool _beread = false;
     
     std::ofstream _ofile;               //定义输出文件

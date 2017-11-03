@@ -191,6 +191,7 @@ int CLhShaderGL::run(int args, char **argv)
     
     _generate_tri.set_fontfile("/Users/baidu/Microsoft_Yahei.ttf");
     _generate_tri.set_depth(19.0);
+    _generate_tri.set_outset(1.0, 1.0);
     _generate_tri.load_freetype();
     _generate_tri.insert_words(L"啊", 1);
     loadshader();

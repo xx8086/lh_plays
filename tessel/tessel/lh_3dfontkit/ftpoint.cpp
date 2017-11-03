@@ -9,28 +9,29 @@
 #include "ftpoint.hpp"
 #include <math.h>
 
-
-bool operator == (const FTPoint &a, const FTPoint &b)
+bool operator==(const FTPoint &a, const FTPoint &b)
 {
-    return((a.values[0] == b.values[0]) && (a.values[1] == b.values[1]) && (a.values[2] == b.values[2]));
+    return ((a._values[0] == b._values[0]) &&
+            (a._values[1] == b._values[1]) &&
+            (a._values[2] == b._values[2]));
 }
 
-
-bool operator != (const FTPoint &a, const FTPoint &b)
+bool operator!=(const FTPoint &a, const FTPoint &b)
 {
-    return((a.values[0] != b.values[0]) || (a.values[1] != b.values[1]) || (a.values[2] != b.values[2]));
+    return ((a._values[0] != b._values[0]) ||
+            (a._values[1] != b._values[1]) ||
+            (a._values[2] != b._values[2]));
 }
 
-FTPoint FTPoint::Normalise()
+FTPoint FTPoint::normalise()
 {
-    double norm = sqrt(values[0] * values[0]
-                       + values[1] * values[1]
-                       + values[2] * values[2]);
-    if(norm == 0.0)
+    double norm = sqrt(_values[0] * _values[0] + _values[1] * _values[1] + _values[2] * _values[2]);
+    const double EPSILON = 1e-9;
+    if (fabs(norm) < EPSILON)
     {
         return *this;
     }
-    
-    FTPoint temp(values[0] / norm, values[1] / norm, values[2] / norm);
+
+    FTPoint temp(_values[0] / norm, _values[1] / norm, _values[2] / norm);
     return temp;
 }
