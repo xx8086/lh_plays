@@ -192,8 +192,9 @@ int CLhShaderGL::run(int args, char **argv)
     _generate_tri.set_fontfile("/Users/baidu/Microsoft_Yahei.ttf");
     _generate_tri.set_depth(19.0);
     _generate_tri.set_outset(1.0, 1.0);
+    _generate_tri.set_sizeface(200);
     _generate_tri.load_freetype();
-    _generate_tri.insert_words(L"123", 3);
+    _generate_tri.insert_words(L"137啊我饿", 6);
     loadshader();
     loopmain();
     release();
@@ -212,8 +213,8 @@ void CLhShaderGL::setcamera(unsigned int pid)
     glm::mat4 model;
     projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, -6.0f));
-    model = glm::rotate(model, -(3.14f*60.0f/180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(-3.0f, 0.0f, -6.0f));
+    model = glm::rotate(model, -(3.14f*30.0f/180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     model = glm::scale(model, glm::vec3(scalae, scalae, scalae));
     glUniformMatrix4fv(glGetUniformLocation(pid, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(glGetUniformLocation(pid, "view"), 1, GL_FALSE, glm::value_ptr(view));

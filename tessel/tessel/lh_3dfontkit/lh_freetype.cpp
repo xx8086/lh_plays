@@ -51,15 +51,30 @@ bool CLFreetype::memory_face()
     return true;
 }
 
-bool CLFreetype::analy_charater(wchar_t &wch)
+unsigned int CLFreetype::get_index(wchar_t& wch)
 {
-    FT_UInt gindex = FT_Get_Char_Index(_face, wch);
+    unsigned int index = 0;
+    std::map<wchar_t, unsigned int>::iterator iter =
+    _map_chacter_index.find(wch);
+    if (iter != _map_chacter_index.end()){
+        index = iter->second;
+    }
+    else{
+        index = FT_Get_Char_Index(_face, wch);
+        _map_chacter_index.insert(std::make_pair(wch, index));
+    };
+    return index;
+}
+
+float CLFreetype::analy_charater(wchar_t &wch)
+{
+    FT_UInt gindex = get_index(wch);
     _error = FT_Load_Glyph(_face, gindex, FT_LOAD_NO_HINTING);
     assert(!_error);
 
     FT_GlyphSlot &slot = _face->glyph;
     _beread = process_contours(slot);
-    return _beread;
+    return _face->glyph->advance.x/*/64*/;
 }
 
 bool CLFreetype::init_freetype()
@@ -84,13 +99,13 @@ bool CLFreetype::init_freetype()
     return true;
 }
 
-unsigned int CLFreetype::front(A_CHAEACTER &aword)
+unsigned int CLFreetype::front(FTPoint offset, A_CHAEACTER &aword)
 {
-    return make(aword, 1.0, 1, _front_outset);
+    return make(offset, aword, 1.0, 1, _front_outset);
 }
-unsigned int CLFreetype::back(A_CHAEACTER &aword)
+unsigned int CLFreetype::back( FTPoint offset, A_CHAEACTER &aword)
 {
-    return make(aword, -1.0, 2, _back_outset);
+    return make(offset, aword, -1.0, 2, _back_outset);
 }
 unsigned int CLFreetype::side(A_CHAEACTER_QUAD &aword)
 {
@@ -132,7 +147,7 @@ unsigned int CLFreetype::side(A_CHAEACTER_QUAD &aword)
     return tol;
 }
 
-unsigned int CLFreetype::make(A_CHAEACTER &aword, FTGL_DOUBLE znormal, int outsettype, float outsetsize)
+unsigned int CLFreetype::make(FTPoint offset, A_CHAEACTER &aword, FTGL_DOUBLE znormal, int outsettype, float outsetsize)
 {
     char filename[128] = {0};
     sprintf(filename, "/Users/baidu/myfile2.txt_%d", outsettype);
@@ -143,10 +158,10 @@ unsigned int CLFreetype::make(A_CHAEACTER &aword, FTGL_DOUBLE znormal, int outse
         switch (outsettype)
         {
         case 1:
-            _contour_list[c]->　build_front_outset(outsetsize);
+            _contour_list[c]->　build_front_outset(offset, outsetsize);
             break;
         case 2:
-            _contour_list[c]->　build_back_outset(outsetsize);
+            _contour_list[c]->　build_back_outset(offset, outsetsize);
             break;
         }
 
@@ -206,6 +221,7 @@ void CLFreetype::release_word()
 
 bool CLFreetype::process_contours(FT_GlyphSlot &slot)
 {
+    
     FT_Outline &outline = slot->outline;
     _contour_current_num = outline.n_contours;
     outflag = outline.flags;
@@ -315,21 +331,21 @@ void CLFreetype::set_outset(float front_outset, float back_outset)
     _back_outset = back_outset;
 }
 
-unsigned int CLFreetype::get_word_front(A_CHAEACTER &fontword)
+unsigned int CLFreetype::get_word_front(FTPoint offset, A_CHAEACTER &fontword)
 {
     unsigned int rt = 0;
     if (_beread)
     {
-        rt = front(fontword);
+        rt = front(offset, fontword);
     }
     return rt;
 }
-unsigned int CLFreetype::get_word_back(A_CHAEACTER &backword)
+unsigned int CLFreetype::get_word_back(FTPoint offset, A_CHAEACTER &backword)
 {
     unsigned int rt = 0;
     if (_beread)
     {
-        rt = back(backword);
+        rt = back(offset, backword);
     }
     return rt;
 }
@@ -343,10 +359,28 @@ unsigned int CLFreetype::get_word_side(A_CHAEACTER_QUAD &sideword)
     return rt;
 }
 
-bool CLFreetype::set_word(wchar_t &wch)
+float CLFreetype::set_word(wchar_t &wch)
 {
-    bool rt = false;
     release_word();
-    rt = analy_charater(wch);
-    return rt;
+    return analy_charater(wch);
+}
+
+
+FTPoint CLFreetype::kern_advance(unsigned int index1, unsigned int index2)
+{
+    float x, y;
+    FT_Vector kernadvance;
+    kernadvance.x = kernadvance.y = 0;
+    
+    _error = FT_Get_Kerning(_face, index1, index2, ft_kerning_unfitted,
+                         &kernadvance);
+    if(_error)
+    {
+        return FTPoint(0.0f, 0.0f);
+    }
+    
+    x = static_cast<float>(kernadvance.x) / 64.0f;
+    y = static_cast<float>(kernadvance.y) / 64.0f;
+    
+    return FTPoint(x, y);
 }

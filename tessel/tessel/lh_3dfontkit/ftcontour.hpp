@@ -50,8 +50,8 @@
         void 　set_parity(int parity);
 
         // FIXME: this should probably go away.
-        void 　build_front_outset(float);
-        void 　build_back_outset(float);
+        void 　build_front_outset(FTPoint, float);
+        void 　build_back_outset(FTPoint, float);
 
     private:
         inline void 　add_point(FTPoint point);

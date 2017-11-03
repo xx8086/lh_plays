@@ -29,13 +29,15 @@ bool CGenerateTri::insert_words(wchar_t *pwch, int len)
     {
         return false;
     }
-
+    
+    _offset = 0;
     for (int i = 0; i < len; i++)
     {
         insert_aword(pwch[i]);
     }
     
     update_buff_datas();
+    _offset = 0;
     return true;
 }
 
@@ -139,11 +141,11 @@ void CGenerateTri::set_outset(float front_outset, float back_outset)
 
 bool CGenerateTri::insert_aword(wchar_t wch)
 {
-    TRI_POINT *word_tri = find_map(wch);
-    if (nullptr == word_tri)
+    TRI_POINT *word_tri ;//= find_map(wch);
+    //if (nullptr == word_tri)
     {
         word_tri = insert_characte(wch);
-        insert_map(wch, word_tri);
+        //insert_map(wch, word_tri);
     }
     _vec_charactes.push_back(word_tri);
     return true;
@@ -180,11 +182,14 @@ void CGenerateTri::update_buff_datas()
         _tol_buff[iter] = new float[_tol_bufflen[iter]];
     }
     
+    //FTPoint fpoint(0.0, 0.0);
+    //int index_point = 0;
     unsigned int len[CHARACTE_COUNTS] = {0};
     iter_words = _vec_charactes.begin();
     for (;
          iter_words != _vec_charactes.end();
          iter_words++){
+        //fpoint += get_offset(index_point++);
         for (int  iter = CHARACTE_FRONT;
              iter < CHARACTE_COUNTS;
              iter++){
@@ -283,9 +288,12 @@ TRI_POINT *CGenerateTri::insert_characte(wchar_t wch)
     A_CHAEACTER fronts;
     A_CHAEACTER backs;
     A_CHAEACTER_QUAD sides;
-    _lh_freetype.set_word(wch);
-    _lh_freetype.get_word_front(fronts);
-    _lh_freetype.get_word_back(backs);
+    
+    float advance =_lh_freetype.set_word(wch);
+    _offset += advance;
+    FTPoint offset(_offset - advance, 0);
+    _lh_freetype.get_word_front(offset, fronts);
+    _lh_freetype.get_word_back(offset, backs);
     _lh_freetype.get_word_side(sides);
     unsigned int 　front_pointsum = 0;
     unsigned int backpointsum = 0;
@@ -358,14 +366,9 @@ void CGenerateTri::hide()
 void CGenerateTri::clear()
 {
     _show = false;
-    for (MAP_CHARACTERS::iterator iter = _map_charactes.begin();
-         iter != _map_charactes.end();
-         iter++)
-    {
-        iter->second->release();
-    }
-    _map_charactes.clear();
     _vec_charactes.clear();
+    _map_charactes.clear();
+    
 }
 
 bool CGenerateTri::set_fontfile(const char *path)
@@ -377,3 +380,4 @@ void CGenerateTri::load_freetype()
 {
     _lh_freetype.init_freetype();
 }
+

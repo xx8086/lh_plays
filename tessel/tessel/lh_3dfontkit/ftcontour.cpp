@@ -201,21 +201,21 @@ FTContour::FTContour(FT_Vector *contour, char *tags, unsigned int n)
     clockwise = (angle < 0.0);
 }
 
-void FTContour::　build_front_outset(float scale)
+void FTContour::　build_front_outset(FTPoint offset, float scale)
 {
     for (size_t i = 0; i < point_count(); ++i)
     {
         const FTPoint &cp = point(i);
         const FTPoint &out = outset(i);
-        　add_front_point((cp + out) * scale);
+        　add_front_point((cp + out + offset) * scale);
         //　add_front_point(point(i) + outset(i) * outset);
     }
 }
 
-void FTContour::　build_back_outset(float scale)
+void FTContour::　build_back_outset(FTPoint offset, float scale)
 {
     for (size_t i = 0; i < point_count(); ++i)
     {
-        　add_back_point((point(i) + outset(i)) * scale);
+        　add_back_point((point(i) + outset(i) + offset) * scale);
     }
 }

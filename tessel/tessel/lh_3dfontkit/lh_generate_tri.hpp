@@ -105,6 +105,7 @@ private:
     VEC_CHARACTERS _vec_charactes;
     unsigned int _tol_bufflen[CHARACTE_COUNTS] = {0};
     float* _tol_buff[CHARACTE_COUNTS] = {nullptr};
+    float _offset;
     //const unsigned int _add_buffs = 1024;
     bool _show = false;
 };
