@@ -159,7 +159,7 @@ void CLhShaderGL::drawshader(unsigned int& fs, unsigned int& vao, unsigned int& 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glDrawArrays(GL_TRIANGLES, 0, size);
+    glDrawArrays(GL_LINES, 0, size);
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -190,11 +190,13 @@ int CLhShaderGL::run(int args, char **argv)
     }
     
     _generate_tri.set_fontfile("/Users/baidu/Microsoft_Yahei.ttf");
-    _generate_tri.set_depth(19.0);
+    _generate_tri.set_depth(8.0);
     _generate_tri.set_outset(1.0, 1.0);
-    _generate_tri.set_sizeface(200);
+    _generate_tri.set_sizeface(400);
     _generate_tri.load_freetype();
-    _generate_tri.insert_words(L"137啊我饿", 6);
+    std::wstring text(L"2");//
+    //std::wstring text(L"麟");
+    _generate_tri.insert_words((wchar_t*)text.c_str(), text.size());
     loadshader();
     loopmain();
     release();

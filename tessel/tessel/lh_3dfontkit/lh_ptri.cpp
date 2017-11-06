@@ -81,33 +81,160 @@ void CLhPTri::que2tri(float *buffer, LFPoint3 &a, LFPoint3 &b, LFPoint3 &c, LFPo
     insertpoint(buffer + 15, d.x, d.y, d.z);
 }
 
+bool CLhPTri::boundingbox(LH_AABB& aabb1, LH_AABB& aabb2)
+{
+    if (aabb1.min_x <= aabb2.max_x && aabb1.min_y <= aabb2.max_y && //
+        aabb1.max_x >= aabb2.min_x && aabb1.max_y >= aabb2.min_y)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    
+}
+
+bool CLhPTri::point_in_poly(LFPoint& pt, std::vector<LFPoint>& poly)
+{
+    assert(!poly.empty());
+    bool inpoly = false;
+    int i = 0;
+    int j = poly.size() - 1;
+    int sum = poly.size();
+    for (i=0;i<sum; i++){
+        if ((poly[i].y< pt.y && poly[j].y>= pt.y ||
+             poly[j].y< pt.y && poly[i].y>= pt.y) &&
+            (poly[i].x <= pt.x || poly[j].x <= pt.x)) {
+            inpoly ^= (poly[i].x + (pt.y-poly[i].y)/(poly[j].y-poly[i].y) * (poly[j].x - poly[i].x) < pt.x);}
+        j=i;}
+    return inpoly;
+     
+}
+
+CLhPTri::LH_AABB CLhPTri::make_aabb(std::vector<LFPoint>& poly)
+{
+    CLhPTri::LH_AABB aabb;
+    aabb.min_x = aabb.max_x = poly[0].x;
+    aabb.min_y = aabb.max_y = poly[0].y;
+    
+    for(std::vector<LFPoint>::iterator iter = poly.begin();
+        iter != poly.end();
+        iter++){
+        if (iter->x > aabb.max_x){
+            aabb.max_x = iter->x;
+        }
+        else if(aabb.min_x > iter->x){
+            aabb.min_x = iter->x;
+        }
+        
+        if (iter->y > aabb.max_y){
+            aabb.max_y = iter->y;
+        }
+        else if(aabb.min_y > iter->y){
+            aabb.min_y = iter->y;
+        }
+    }
+    
+    return aabb;
+}
+
+void CLhPTri::make_hole(A_CHAEACTER &points, MAP_POLY_WITH_HOLES& holespoly)
+{
+    std::vector<LH_AABB> vecaabb;
+    for (A_CHAEACTER::iterator iter = points.begin();
+         iter != points.end();
+         iter++){
+        vecaabb.push_back(make_aabb(*iter));
+    }
+    
+    std::vector<int> vecchildren;
+    int i = 0;
+    for (std::vector<LH_AABB>::iterator iter = vecaabb.begin();
+         iter != vecaabb.end();
+         iter++, i++){
+        std::vector<int> vecholes;
+        vecholes.clear();
+        int j = 0;
+        for (std::vector<LH_AABB>::iterator iterchilds = vecaabb.begin();
+             iterchilds != vecaabb.end();
+             iterchilds++, j++){
+            if (iterchilds == iter){
+                continue;
+            }
+            if (boundingbox(*iter, *iterchilds)){
+                std::vector<LFPoint>& a = points.at(i);
+                std::vector<LFPoint>& b = points.at(j);
+                bool allin = true;
+                for(std::vector<LFPoint>::iterator iterpoint = b.begin();
+                    b.end() != iterpoint;
+                    iterpoint++){
+                    allin = point_in_poly(*iterpoint,a);
+                    if(!allin){
+                        break;
+                    }
+                }
+                if(allin){
+                    vecholes.push_back(j);
+                    vecchildren.push_back(j);
+                }
+            }
+        }
+        holespoly.insert(std::make_pair(i, vecholes));
+    }
+    
+    for (std::vector<int>::iterator iter = vecchildren.begin();
+         iter != vecchildren.end();
+         iter++){
+        MAP_POLY_WITH_HOLES::iterator clildren = holespoly.find(*iter);
+        if (clildren != holespoly.end()){
+            holespoly.erase(clildren);
+        }
+    }
+}
+
 float* CLhPTri::create_thri(float depth, A_CHAEACTER &points, unsigned int &counts)
 {
     int triangle_counts = 0;
     std::vector<p2t::CDT *> cdts;
-    std::vector<std::vector<p2t::Point *>> vecpolys;
-    std::vector<std::vector<p2t::Triangle *>> triangles;
-    for (A_CHAEACTER::iterator iter = points.begin();
-         iter != points.end();
+    std::vector<std::vector<p2t::Point *> > vecpolys;
+    std::vector<std::vector<p2t::Triangle *> > triangles;
+    
+    MAP_POLY_WITH_HOLES poluholes;
+    make_hole(points, poluholes);
+    for (MAP_POLY_WITH_HOLES::iterator iter = poluholes.begin();
+         iter != poluholes.end();
          iter++)
     {
         std::vector<p2t::Point *> vecpoly;
         vecpoly.clear();
-        for (std::vector<LFPoint>::iterator iterpoint = iter->begin();
-             iter->end() != iterpoint;
+        std::vector<LFPoint>& ploy = points.at(iter->first);
+        for (std::vector<LFPoint>::iterator iterpoint = ploy.begin();
+             ploy.end() != iterpoint;
              iterpoint++)
         {
             vecpoly.push_back(new p2t::Point(iterpoint->x, iterpoint->y));
         }
         vecpolys.push_back(vecpoly);
         p2t::CDT *cdt = new p2t::CDT(vecpoly);
-        //if(0) {
-        // Add head hole
-        //vector<Point*> head_hole = CreateHeadHole();
-        //当前轮廓iter如果有洞head_hole，需要手动AddHole进来。
-        //cdt->AddHole(head_hole.size);
-        //polylines.push_back(head_hole);
-        //}
+        if (iter->second.size() > 0) {
+            std::vector<int>& holes = iter->second;
+            for(std::vector<int>::iterator iterchildrenat = holes.begin();
+                iterchildrenat != holes.end();
+                iterchildrenat++){
+                std::vector<LFPoint>& ploychildern = points.at(*iterchildrenat);
+                std::vector<p2t::Point *> vecpolychildren;
+                vecpolychildren.clear();
+                for (std::vector<LFPoint>::iterator iterpoint = ploychildern.begin();
+                     ploychildern.end() != iterpoint;
+                     iterpoint++)
+                {
+                    vecpolychildren.push_back(new p2t::Point(iterpoint->x, iterpoint->y));
+                }
+                cdt->AddHole(vecpolychildren);
+                vecpolys.push_back(vecpolychildren);
+            }
+        }
         
         cdt->Triangulate();
         triangles.push_back(cdt->GetTriangles());
