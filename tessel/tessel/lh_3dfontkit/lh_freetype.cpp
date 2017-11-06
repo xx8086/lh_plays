@@ -312,9 +312,9 @@ bool CLFreetype::set_fontfile(const char *fontfile)
     _str_ttf = fontfile;
     return true;
 }
-void CLFreetype::set_sizeface(float fontsize)
+float CLFreetype::get_sizeface()
 {
-    _pointsize = fontsize;
+    return _pointsize;
 }
 void CLFreetype::set_depth(float depth)
 {

@@ -110,9 +110,10 @@ float CGenerateTri::str2f(const std::string &s)
     return x;
 }
 
-void CGenerateTri::set_sizeface(float fontsize)
+float CGenerateTri::get_sizeface_scalae(float fontsize)
 {
-    _lh_freetype.set_sizeface(fontsize);
+    float size = _lh_freetype.get_sizeface();
+    return fontsize/size;
 }
 void CGenerateTri::set_depth(float depth)
 {

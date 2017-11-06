@@ -159,7 +159,7 @@ void CLhShaderGL::drawshader(unsigned int& fs, unsigned int& vao, unsigned int& 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glDrawArrays(GL_LINES, 0, size);
+    glDrawArrays(GL_TRIANGLES, 0, size);
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -170,17 +170,21 @@ void CLhShaderGL::draw()
     glEnable(GL_CULL_FACE);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+#if 1
     drawshader(shader_program_back, _vaos[1], _vbos[1],
                _generate_tri.get_back_buff_size()/sizeof(float),
                0.0, 0.0, 1.0);//back
-    
+#endif
+#if 1
     drawshader(shader_program_side, _vaos[2], _vbos[2],
                _generate_tri.get_side_buff_size()/sizeof(float),
                0.0, 1.0, 0.0);//side
-    
+#endif
+#if 1
     drawshader(shader_program_front, _vaos[0], _vbos[0],
                _generate_tri.get_front_buff_size()/sizeof(float),
                1.0, 0.0, 0.0);//front
+#endif
 }
 
 int CLhShaderGL::run(int args, char **argv)
@@ -190,12 +194,12 @@ int CLhShaderGL::run(int args, char **argv)
     }
     
     _generate_tri.set_fontfile("/Users/baidu/Microsoft_Yahei.ttf");
-    _generate_tri.set_depth(8.0);
+    _generate_tri.set_depth(18.0);
     _generate_tri.set_outset(1.0, 1.0);
-    _generate_tri.set_sizeface(400);
+    scalae *= _generate_tri.get_sizeface_scalae(80.0);
+    
     _generate_tri.load_freetype();
-    std::wstring text(L"2");//
-    //std::wstring text(L"麟");
+    std::wstring text(L"1234567我麟耐啊ABCDEF");
     _generate_tri.insert_words((wchar_t*)text.c_str(), text.size());
     loadshader();
     loopmain();
@@ -215,8 +219,8 @@ void CLhShaderGL::setcamera(unsigned int pid)
     glm::mat4 model;
     projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    model = glm::translate(model, glm::vec3(-3.0f, 0.0f, -6.0f));
-    model = glm::rotate(model, -(3.14f*30.0f/180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(-4.0f, 0.0f, -6.0f));
+    model = glm::rotate(model, -(3.14f*40.0f/180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     model = glm::scale(model, glm::vec3(scalae, scalae, scalae));
     glUniformMatrix4fv(glGetUniformLocation(pid, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(glGetUniformLocation(pid, "view"), 1, GL_FALSE, glm::value_ptr(view));

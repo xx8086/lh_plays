@@ -31,7 +31,7 @@ public:
     
     bool init_freetype();
     bool set_fontfile(const char*);
-    void set_sizeface(float);
+    float get_sizeface();
     void set_depth(float);
     void set_outset(float, float);
     void release_word();
@@ -63,7 +63,7 @@ private://固定的
     unsigned int _window_y = 0;
 
     std::string _str_ttf;
-    unsigned int _pointsize = 400;
+    const unsigned int _pointsize = 10000;
     unsigned int outset = 1.0;
     float _front_outset = 0.8;
     float _back_outset = 1.0;

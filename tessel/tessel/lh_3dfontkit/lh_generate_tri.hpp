@@ -61,7 +61,8 @@ public:
     const char* get_side_buff();
 
     bool insert_words(wchar_t*, int);
-    void set_sizeface(float);
+    float get_sizeface_scalae(float size);
+    //获取字体大小为size需要缩放的倍数(size较小时freetype获取点有问题，内部为固定个1000size，由opengl缩放来控制字体大小)。
     void set_depth(float);
     void set_outset(float, float);
     void show();

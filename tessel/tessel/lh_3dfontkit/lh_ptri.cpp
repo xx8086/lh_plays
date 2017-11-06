@@ -81,35 +81,31 @@ void CLhPTri::que2tri(float *buffer, LFPoint3 &a, LFPoint3 &b, LFPoint3 &c, LFPo
     insertpoint(buffer + 15, d.x, d.y, d.z);
 }
 
-bool CLhPTri::boundingbox(LH_AABB& aabb1, LH_AABB& aabb2)
+bool CLhPTri::boundingbox(LH_AABB& a, LH_AABB& b)
 {
-    if (aabb1.min_x <= aabb2.max_x && aabb1.min_y <= aabb2.max_y && //
-        aabb1.max_x >= aabb2.min_x && aabb1.max_y >= aabb2.min_y)
+    if (a.min_x <= b.max_x && a.min_y <= b.max_y && //
+        a.max_x >= b.min_x && a.max_y >= b.min_y)
     {
         return true;
     }
-    else
-    {
-        return false;
-    }
     
+    return false;
 }
 
 bool CLhPTri::point_in_poly(LFPoint& pt, std::vector<LFPoint>& poly)
 {
     assert(!poly.empty());
     bool inpoly = false;
-    int i = 0;
-    int j = poly.size() - 1;
-    int sum = poly.size();
+    long i = 0;
+    long j = poly.size() - 1;
+    long sum = poly.size();
     for (i=0;i<sum; i++){
-        if ((poly[i].y< pt.y && poly[j].y>= pt.y ||
-             poly[j].y< pt.y && poly[i].y>= pt.y) &&
+        if (((poly[i].y< pt.y && poly[j].y>= pt.y) ||
+             (poly[j].y< pt.y && poly[i].y>= pt.y)) &&
             (poly[i].x <= pt.x || poly[j].x <= pt.x)) {
             inpoly ^= (poly[i].x + (pt.y-poly[i].y)/(poly[j].y-poly[i].y) * (poly[j].x - poly[i].x) < pt.x);}
         j=i;}
     return inpoly;
-     
 }
 
 CLhPTri::LH_AABB CLhPTri::make_aabb(std::vector<LFPoint>& poly)
