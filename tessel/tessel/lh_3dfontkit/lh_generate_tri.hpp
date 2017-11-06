@@ -10,8 +10,8 @@
 #define lh_generate_tri_hpp
 
 #include <stdio.h>
-#include "../poly2tri/poly2tri.h"
 #include "lh_freetype.hpp"
+#include "lh_ptri.hpp"
 #include <map>
 #include <vector>
 
@@ -88,14 +88,12 @@ private:
     TRI_POINT* find_map(wchar_t);
     bool insert_map(wchar_t, TRI_POINT*);
     TRI_POINT* insert_characte(wchar_t);
-    void insertpoint(float* buff, float x, float y, float z);
-    void que2tri(float* buffer, LFPoint3& a, LFPoint3& b, LFPoint3& c, LFPoint3& d);
-    float* create_thri(float, A_CHAEACTER&, unsigned int&);
-    float* create_side(A_CHAEACTER_QUAD&, unsigned int&);
+    
     void update_buff_datas();
     void release_buff_datas();
 private:
     CLFreetype _lh_freetype;
+    CLhPTri _lh_poly2tri;
     typedef std::pair<std::map<wchar_t, TRI_POINT*>::iterator,bool> PAIR_CHARACTER_BOOL;
     typedef std::pair<wchar_t, TRI_POINT*> PAIR_CHARACTER;
     typedef std::map<wchar_t, TRI_POINT*> MAP_CHARACTERS;

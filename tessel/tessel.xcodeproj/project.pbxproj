@@ -23,6 +23,7 @@
 		9D562CC41FA85AA100A9C0B3 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D562CC21FA85A7000A9C0B3 /* libfreetype.a */; };
 		9D562CCD1FA8C9CB00A9C0B3 /* libbz2.1.0.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D562CCC1FA8C9BF00A9C0B3 /* libbz2.1.0.5.tbd */; };
 		9D562CD11FA8CAFA00A9C0B3 /* libz.1.2.8.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D562CD01FA8CAEB00A9C0B3 /* libz.1.2.8.tbd */; };
+		9D67938B1FB012B600CB4D2D /* lh_ptri.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D6793891FB012B600CB4D2D /* lh_ptri.cpp */; };
 		9D6C68FD1FAAF74A002BA972 /* lh_base_shader_gl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D6C68F71FAAF6AA002BA972 /* lh_base_shader_gl.cpp */; };
 		9D6C68FE1FAAF74C002BA972 /* ftcontour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D6C68F21FAAF6AA002BA972 /* ftcontour.cpp */; };
 		9D6C68FF1FAAF74F002BA972 /* ftpoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D6C68F41FAAF6AA002BA972 /* ftpoint.cpp */; };
@@ -421,6 +422,9 @@
 		9D562CC31FA85A7000A9C0B3 /* libfreetyped.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfreetyped.a; sourceTree = "<group>"; };
 		9D562CCC1FA8C9BF00A9C0B3 /* libbz2.1.0.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.5.tbd; path = usr/lib/libbz2.1.0.5.tbd; sourceTree = SDKROOT; };
 		9D562CD01FA8CAEB00A9C0B3 /* libz.1.2.8.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.8.tbd; path = usr/lib/libz.1.2.8.tbd; sourceTree = SDKROOT; };
+		9D6793891FB012B600CB4D2D /* lh_ptri.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh_ptri.cpp; sourceTree = "<group>"; };
+		9D67938A1FB012B600CB4D2D /* lh_ptri.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lh_ptri.hpp; sourceTree = "<group>"; };
+		9D67938C1FB019F400CB4D2D /* lh_type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lh_type.h; sourceTree = "<group>"; };
 		9D6C68F21FAAF6AA002BA972 /* ftcontour.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ftcontour.cpp; sourceTree = "<group>"; };
 		9D6C68F31FAAF6AA002BA972 /* ftcontour.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ftcontour.hpp; sourceTree = "<group>"; };
 		9D6C68F41FAAF6AA002BA972 /* ftpoint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ftpoint.cpp; sourceTree = "<group>"; };
@@ -955,6 +959,9 @@
 				9D6C68FA1FAAF6AA002BA972 /* lh_freetype.hpp */,
 				9D6C68FB1FAAF6AA002BA972 /* lh_generate_tri.cpp */,
 				9D6C68FC1FAAF6AA002BA972 /* lh_generate_tri.hpp */,
+				9D6793891FB012B600CB4D2D /* lh_ptri.cpp */,
+				9D67938A1FB012B600CB4D2D /* lh_ptri.hpp */,
+				9D67938C1FB019F400CB4D2D /* lh_type.h */,
 			);
 			path = lh_3dfontkit;
 			sourceTree = "<group>";
@@ -1089,6 +1096,7 @@
 				9D07E0C81FA071D400EEB94A /* sweep_context.cc in Sources */,
 				9DD86A8B1F9F5617002934AE /* lake.cpp in Sources */,
 				9D07E0A91FA04D0200EEB94A /* glbase.cpp in Sources */,
+				9D67938B1FB012B600CB4D2D /* lh_ptri.cpp in Sources */,
 				9DD86A7D1F9F340D002934AE /* main.cpp in Sources */,
 				9DD86A8E1F9F58DC002934AE /* quad.cpp in Sources */,
 			);

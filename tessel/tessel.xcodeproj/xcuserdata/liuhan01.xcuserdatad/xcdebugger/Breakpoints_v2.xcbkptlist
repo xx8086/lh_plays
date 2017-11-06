@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "tessel/lh_3dfontkit/lh_generate_tri.cpp"
-            timestampString = "531407126.004856"
+            timestampString = "531635681.933333"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "295"
-            endingLineNumber = "295"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
             landmarkName = "CGenerateTri::insert_characte(wchar_t wch)"
             landmarkType = "7">
          </BreakpointContent>

@@ -13,30 +13,9 @@
 #include FT_FREETYPE_H
 #include FT_STROKER_H
 #include "ftcontour.hpp"
-#include <vector>
 #include <map>
 #include <fstream>
-
-typedef struct LFPoint
-{
-    double x = 0.0;
-    double y = 0.0;
-    LFPoint(double a, double b):x(a), y(b){}
-    LFPoint(){}
-} LF_POINT;
-
-typedef struct LFPoint3
-{
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
-    LFPoint3(double a, double b, double c):
-    x(a), y(b), z(c){}
-    LFPoint3(){}
-} LF_POINT3;
-
-typedef std::vector< std::vector<LFPoint> >  A_CHAEACTER;
-typedef std::vector< std::vector<LFPoint3> >  A_CHAEACTER_QUAD;
+#include "lh_type.h"
 
 //CLFreetype
 class CLFreetype
