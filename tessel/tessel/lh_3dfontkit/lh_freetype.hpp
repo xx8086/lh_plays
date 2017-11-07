@@ -47,6 +47,7 @@ private:
     unsigned int front(FTPoint, A_CHAEACTER&);
     unsigned int back(FTPoint, A_CHAEACTER&);
     unsigned int side(A_CHAEACTER_QUAD&);
+    unsigned int side_simple(A_CHAEACTER_QUAD&);
     unsigned int make(FTPoint offset, A_CHAEACTER&, FTGL_DOUBLE, int, float);
 private://动态的
     FTContour** _contour_list = nullptr;

@@ -115,75 +115,36 @@ void CLhShaderGL::link()
 bool CLhShaderGL::loadshader()
 {
     link();
-    bind_vertex_buffer();
     
     glEnableVertexAttribArray(0);
     glBindVertexArray(0);
     return true;
 }
 
-
-void CLhShaderGL::bindshader(unsigned int& vao, unsigned int& vbo, unsigned int size, const char* datas)
-{
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER,
-                 size,
-                 datas, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-void CLhShaderGL::bind_vertex_buffer()
-{
-    glGenVertexArrays(3, _vaos);
-    glGenBuffers(3, _vbos);
-    
-    bindshader(_vaos[0], _vbos[0],
-               _generate_tri.get_front_buff_size(),
-               _generate_tri.get_front_buff());
-    bindshader(_vaos[1], _vbos[1],
-               _generate_tri.get_back_buff_size(),
-               _generate_tri.get_back_buff());
-    bindshader(_vaos[2], _vbos[2],
-               _generate_tri.get_side_buff_size(),
-               _generate_tri.get_side_buff());
-}
-
-void CLhShaderGL::drawshader(unsigned int& fs, unsigned int& vao, unsigned int& vbo, unsigned int size,
-                             float r, float g, float b)
-{
-    setcamera(fs);
-    glUniform3fv(glGetUniformLocation(fs, "textColor"), 1, value_ptr(glm::vec3(r, g, b)));
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glDrawArrays(GL_TRIANGLES, 0, size);
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
 void CLhShaderGL::draw()
 {
+    glUseProgram(0);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 #if 1
-    drawshader(shader_program_back, _vaos[1], _vbos[1],
-               _generate_tri.get_back_buff_size()/sizeof(float),
-               0.0, 0.0, 1.0);//back
+    glUseProgram(shader_program_front);
+    setcamera(shader_program_front, 0.7, 0.0, 0.0);
+    _generate_tri.font_rend(CHARACTE_FRONT);
+    glUseProgram(0);
 #endif
 #if 1
-    drawshader(shader_program_side, _vaos[2], _vbos[2],
-               _generate_tri.get_side_buff_size()/sizeof(float),
-               0.0, 1.0, 0.0);//side
+    glUseProgram(shader_program_back);
+    setcamera(shader_program_back, 0.0, 0.0, 0.7);
+    _generate_tri.font_rend(CHARACTE_BACK);
+    glUseProgram(0);
 #endif
 #if 1
-    drawshader(shader_program_front, _vaos[0], _vbos[0],
-               _generate_tri.get_front_buff_size()/sizeof(float),
-               1.0, 0.0, 0.0);//front
+    glUseProgram(shader_program_side);
+    setcamera(shader_program_side, 0.0, 0.7, 0.0);
+    _generate_tri.font_rend(CHARACTE_SIDE);
+    glUseProgram(0);
 #endif
 }
 
@@ -194,9 +155,9 @@ int CLhShaderGL::run(int args, char **argv)
     }
     
     _generate_tri.set_fontfile("/Users/baidu/Microsoft_Yahei.ttf");
-    _generate_tri.set_depth(18.0);
+    _generate_tri.set_depth(400.0);
     _generate_tri.set_outset(1.0, 1.0);
-    scalae *= _generate_tri.get_sizeface_scalae(80.0);
+    scalae *= _generate_tri.get_sizeface_scalae(100.0);
     
     _generate_tri.load_freetype();
     std::wstring text(L"1234567我麟耐啊ABCDEF");
@@ -208,7 +169,7 @@ int CLhShaderGL::run(int args, char **argv)
     return 0;
 }
 
-void CLhShaderGL::setcamera(unsigned int pid)
+void CLhShaderGL::setcamera(unsigned int pid, float r, float g, float b)
 {
     glUseProgram(pid);
     glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);
@@ -220,11 +181,12 @@ void CLhShaderGL::setcamera(unsigned int pid)
     projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     model = glm::translate(model, glm::vec3(-4.0f, 0.0f, -6.0f));
-    model = glm::rotate(model, -(3.14f*40.0f/180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, -(3.14f*30.0f/180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     model = glm::scale(model, glm::vec3(scalae, scalae, scalae));
     glUniformMatrix4fv(glGetUniformLocation(pid, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUniformMatrix4fv(glGetUniformLocation(pid, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(pid, "model"), 1, GL_FALSE, glm::value_ptr(model));
+    glUniform3fv(glGetUniformLocation(pid, "textColor"), 1, glm::value_ptr(glm::vec3(r, g, b)));
 }
 
 void CLhShaderGL::processInput(GLFWwindow *window)

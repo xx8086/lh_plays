@@ -107,6 +107,47 @@ unsigned int CLFreetype::back( FTPoint offset, A_CHAEACTER &aword)
 {
     return make(offset, aword, -1.0, 2, _back_outset);
 }
+
+unsigned int CLFreetype::side_simple(A_CHAEACTER_QUAD& aword)
+{
+    unsigned int tol = 0;
+    for (size_t c = 0; c < _contour_current_num; ++c)
+    {
+        const FTContour *contour = _contour_list[c];
+        size_t n = contour->point_count();
+        if (n < 2)
+        {
+            continue;
+        }
+        
+        std::vector<LFPoint3> quads;
+        for (size_t j = 0; j < n; ++j)
+        {
+            size_t cur = j;
+            size_t next = (cur == n - 1) ? 0 : cur + 1;
+            
+            FTPoint frontpt = contour->front_point(cur);
+            FTPoint nextpt = contour->front_point(next);
+            LFPoint3 a(frontpt.xf() / 64.0f, frontpt.yf() / 64.0f, 0.0f);
+            LFPoint3 d(nextpt.xf() / 64.0f, nextpt.yf() / 64.0f, 0.0f);
+            LFPoint3 b = a;
+            LFPoint3 c = d;
+            c.z = -_depth;
+            b.z = -_depth;
+            quads.push_back(a);
+            quads.push_back(b);
+            quads.push_back(c);
+            quads.push_back(d);
+        }
+        
+        tol += quads.size();
+        aword.push_back(quads);
+        quads.clear();
+    }
+    
+    return tol;
+}
+
 unsigned int CLFreetype::side(A_CHAEACTER_QUAD &aword)
 {
     unsigned int tol = 0;
@@ -125,17 +166,17 @@ unsigned int CLFreetype::side(A_CHAEACTER_QUAD &aword)
             size_t cur = (j == n) ? 0 : j;
             size_t next = (cur == n - 1) ? 0 : cur + 1;
 
-            FTPoint frontPt = contour->　front_point(cur);
-            FTPoint backPt = contour->back_point(cur);
+            FTPoint frontpt = contour->front_point(cur);
+            FTPoint backpt = contour->back_point(cur);
             if (outflag & ft_outline_reverse_fill)
             {
-                quads.push_back(LFPoint3(backPt.xf() / 64.0f, backPt.yf() / 64.0f, 0.0f));
-                quads.push_back(LFPoint3(frontPt.xf() / 64.0f, frontPt.yf() / 64.0f, -_depth));
+                quads.push_back(LFPoint3(backpt.xf() / 64.0f, backpt.yf() / 64.0f, 0.0f));
+                quads.push_back(LFPoint3(frontpt.xf() / 64.0f, frontpt.yf() / 64.0f, -_depth));
             }
             else
             {
-                quads.push_back(LFPoint3(backPt.xf() / 64.0f, backPt.yf() / 64.0f, -_depth));
-                quads.push_back(LFPoint3(frontPt.xf() / 64.0f, frontPt.yf() / 64.0f, 0.0f));
+                quads.push_back(LFPoint3(backpt.xf() / 64.0f, backpt.yf() / 64.0f, -_depth));
+                quads.push_back(LFPoint3(frontpt.xf() / 64.0f, frontpt.yf() / 64.0f, 0.0f));
             }
         }
 
@@ -355,6 +396,7 @@ unsigned int CLFreetype::get_word_side(A_CHAEACTER_QUAD &sideword)
     if (_beread)
     {
         rt = side(sideword);
+        //rt = side_simple(sideword);
     }
     return rt;
 }
@@ -368,13 +410,14 @@ float CLFreetype::set_word(wchar_t &wch)
 
 FTPoint CLFreetype::kern_advance(unsigned int index1, unsigned int index2)
 {
-    float x, y;
+    float x = 0.0;
+    float y = 0.0;
     FT_Vector kernadvance;
     kernadvance.x = kernadvance.y = 0;
     
     _error = FT_Get_Kerning(_face, index1, index2, ft_kerning_unfitted,
                          &kernadvance);
-    if(_error)
+    if (_error)
     {
         return FTPoint(0.0f, 0.0f);
     }

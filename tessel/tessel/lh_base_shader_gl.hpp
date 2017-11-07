@@ -27,13 +27,9 @@ private:
     void link();
     bool loopmain();
     void release();
-    void setcamera(unsigned int);
+    void setcamera(unsigned int, float, float, float);
     void draw();
-    void bind_vertex_buffer();
     void linkshader(unsigned int&, unsigned int&, unsigned int&, const char*);
-    void bindshader(unsigned int&, unsigned int&, unsigned int, const char*);
-    void drawshader(unsigned int& fs, unsigned int& vao, unsigned int& vbo, unsigned int size,
-                    float r, float g, float b);
     
 private:
     CGenerateTri _generate_tri;

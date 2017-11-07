@@ -71,6 +71,9 @@ public:
 
     bool set_fontfile(const char*);
     void load_freetype();
+    
+    void font_rend(CHARACTE_POSTION postion);
+    
 public:
     float str2f(const std::string &s);
     template <class C>
@@ -86,26 +89,37 @@ public:
 private:
     void release();
     bool insert_aword(wchar_t);
-    TRI_POINT* find_map(wchar_t);
-    bool insert_map(wchar_t, TRI_POINT*);
     TRI_POINT* insert_characte(wchar_t);
     
     void update_buff_datas();
     void release_buff_datas();
+    void bind_vertex_buffer();
+private://render
+    
+    void bindshader(unsigned int vao,
+                    unsigned int vbo,
+                    unsigned int size,
+                    const char* datas);
+    void drawshader(unsigned int vao,
+                    unsigned int vbo,
+                    unsigned int size);
+private:
+    struct v_x_o{
+        unsigned int vxo[CHARACTE_COUNTS];
+    };
+    typedef std::vector<v_x_o> VEC_VXO;
+    VEC_VXO _vec_vbos;
+    VEC_VXO _vec_vaos;
 private:
     CLFreetype _lh_freetype;
     CLhPTri _lh_poly2tri;
-    typedef std::pair<std::map<wchar_t, TRI_POINT*>::iterator,bool> PAIR_CHARACTER_BOOL;
-    typedef std::pair<wchar_t, TRI_POINT*> PAIR_CHARACTER;
-    typedef std::map<wchar_t, TRI_POINT*> MAP_CHARACTERS;
-    MAP_CHARACTERS _map_charactes;
 
     typedef std::vector<TRI_POINT*> VEC_CHARACTERS;
     VEC_CHARACTERS _vec_charactes;
     unsigned int _tol_bufflen[CHARACTE_COUNTS] = {0};
     float* _tol_buff[CHARACTE_COUNTS] = {nullptr};
+    std::vector<float> _vec_tol[CHARACTE_COUNTS];
     float _offset;
-    //const unsigned int _add_buffs = 1024;
     bool _show = false;
 };
 

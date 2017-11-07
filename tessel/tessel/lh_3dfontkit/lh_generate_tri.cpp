@@ -10,6 +10,10 @@
 #include <fstream>
 #include <sstream>
 
+//#include <OpenGLES/ES2/gl.h>
+//#include <OpenGLES/ES2/glext.h>
+#include "glad.hpp"
+
 #include "../glm/glm.hpp"
 #include "../glm/gtc/matrix_transform.hpp"
 #include "../glm/gtc/type_ptr.hpp"
@@ -37,30 +41,12 @@ bool CGenerateTri::insert_words(wchar_t *pwch, int len)
         insert_aword(pwch[i]);
     }
     
-    update_buff_datas();
+    //update_buff_datas();
     _offset = 0;
+    
+    bind_vertex_buffer();
     return true;
 }
-
-bool CGenerateTri::insert_map(wchar_t wch, TRI_POINT *tri)
-{
-    PAIR_CHARACTER_BOOL ret;
-    ret = _map_charactes.insert(std::pair<wchar_t, TRI_POINT *>(wch, tri));
-    return ret.second;
-}
-
-TRI_POINT *CGenerateTri::find_map(wchar_t wch)
-{
-    TRI_POINT *rt = nullptr;
-    MAP_CHARACTERS::iterator iter = _map_charactes.find(wch);
-    if (_map_charactes.end() != iter)
-    {
-        rt = iter->second;
-    }
-
-    return rt;
-}
-////////
 
 unsigned int CGenerateTri::get_front_buff_size()
 {
@@ -113,7 +99,7 @@ float CGenerateTri::str2f(const std::string &s)
 float CGenerateTri::get_sizeface_scalae(float fontsize)
 {
     float size = _lh_freetype.get_sizeface();
-    return fontsize/size;
+    return fontsize / size;
 }
 void CGenerateTri::set_depth(float depth)
 {
@@ -126,12 +112,8 @@ void CGenerateTri::set_outset(float front_outset, float back_outset)
 
 bool CGenerateTri::insert_aword(wchar_t wch)
 {
-    TRI_POINT *word_tri ;//= find_map(wch);
-    //if (nullptr == word_tri)
-    {
-        word_tri = insert_characte(wch);
-        //insert_map(wch, word_tri);
-    }
+    TRI_POINT *word_tri;
+    word_tri = insert_characte(wch);
     _vec_charactes.push_back(word_tri);
     return true;
 }
@@ -152,6 +134,7 @@ void CGenerateTri::release_buff_datas()
 void CGenerateTri::update_buff_datas()
 {
     release_buff_datas();
+    
     VEC_CHARACTERS::iterator iter_words = _vec_charactes.begin();
     for (;
         iter_words != _vec_charactes.end();
@@ -167,20 +150,17 @@ void CGenerateTri::update_buff_datas()
         _tol_buff[iter] = new float[_tol_bufflen[iter]];
     }
     
-    //FTPoint fpoint(0.0, 0.0);
-    //int index_point = 0;
     unsigned int len[CHARACTE_COUNTS] = {0};
     iter_words = _vec_charactes.begin();
     for (;
          iter_words != _vec_charactes.end();
          iter_words++){
-        //fpoint += get_offset(index_point++);
         for (int  iter = CHARACTE_FRONT;
              iter < CHARACTE_COUNTS;
              iter++){
             memcpy(_tol_buff[iter] + len[iter],
                    (*iter_words)->buff[iter],
-                   sizeof(float)*(*iter_words)->bufflen[iter]);
+                   sizeof(float) * ((*iter_words)->bufflen[iter]));
             len[iter] += (*iter_words)->bufflen[iter];
         }
     }
@@ -198,7 +178,7 @@ TRI_POINT *CGenerateTri::insert_characte(wchar_t wch)
     _lh_freetype.get_word_front(offset, fronts);
     _lh_freetype.get_word_back(offset, backs);
     _lh_freetype.get_word_side(sides);
-    unsigned int 　front_pointsum = 0;
+    unsigned int front_pointsum = 0;
     unsigned int backpointsum = 0;
     unsigned int sidepointsum = 0;
 
@@ -206,7 +186,7 @@ TRI_POINT *CGenerateTri::insert_characte(wchar_t wch)
     word_tri->buff[CHARACTE_FRONT] = _lh_poly2tri.create_thri(0, fronts, front_pointsum);
     word_tri->buff[CHARACTE_BACK] = _lh_poly2tri.create_thri(-_lh_freetype.get_depth(),
                                                 backs, backpointsum);
-    word_tri->bufflen[CHARACTE_FRONT] = 　front_pointsum;
+    word_tri->bufflen[CHARACTE_FRONT] = front_pointsum;
     word_tri->bufflen[CHARACTE_BACK] = backpointsum;
 
     word_tri->buff[CHARACTE_SIDE] = _lh_poly2tri.create_side(sides, sidepointsum);
@@ -229,7 +209,6 @@ void CGenerateTri::clear()
 {
     _show = false;
     _vec_charactes.clear();
-    _map_charactes.clear();
     
 }
 
@@ -241,5 +220,71 @@ bool CGenerateTri::set_fontfile(const char *path)
 void CGenerateTri::load_freetype()
 {
     _lh_freetype.init_freetype();
+}
+
+void CGenerateTri::bindshader(unsigned int vao,
+                              unsigned int vbo,
+                              unsigned int size,
+                              const char *datas)
+{
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER,
+                 size,
+                 datas, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void CGenerateTri::drawshader(unsigned int vao,
+                              unsigned int vbo,
+                              unsigned int size)
+{
+    glBindVertexArray(vao);
+    //glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    //glEnableVertexAttribArray(0);
+    
+    glDrawArrays(GL_TRIANGLES, 0, size);
+    glBindVertexArray(0);
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void CGenerateTri::font_rend(CHARACTE_POSTION postion)
+{
+    int words_counts = _vec_vbos.size();
+    for (int i = 0;
+        i < words_counts;
+        i++)
+    {
+        drawshader(_vec_vaos[i].vxo[postion],
+                   _vec_vbos[i].vxo[postion],
+                   _vec_charactes[i]->bufflen[postion] / 3);
+    }
+}
+
+void CGenerateTri::bind_vertex_buffer()
+{
+    for (VEC_CHARACTERS::iterator iter_words = _vec_charactes.begin();
+        iter_words != _vec_charactes.end();
+        iter_words++){
+        v_x_o vao;
+        v_x_o vbo;
+        glGenVertexArrays(CHARACTE_COUNTS, vao.vxo);
+        glGenBuffers(CHARACTE_COUNTS, vbo.vxo);
+        _vec_vbos.push_back(vbo);
+        _vec_vaos.push_back(vao);
+        bindshader(vao.vxo[CHARACTE_SIDE], vbo.vxo[CHARACTE_SIDE],
+                   sizeof(float) * (*iter_words)->bufflen[CHARACTE_SIDE],
+                   (const char*)(*iter_words)->buff[CHARACTE_SIDE]);
+        bindshader(vao.vxo[CHARACTE_BACK], vbo.vxo[CHARACTE_BACK],
+                   sizeof(float) * (*iter_words)->bufflen[CHARACTE_BACK],
+                   (const char*)(*iter_words)->buff[CHARACTE_BACK]);
+        bindshader(vao.vxo[CHARACTE_FRONT], vbo.vxo[CHARACTE_FRONT],
+                   sizeof(float) * (*iter_words)->bufflen[CHARACTE_FRONT],
+                   (const char*)(*iter_words)->buff[CHARACTE_FRONT]);
+    }
+    
 }
 
