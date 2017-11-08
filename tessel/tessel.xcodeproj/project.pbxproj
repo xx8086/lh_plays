@@ -425,6 +425,10 @@
 		9D6793891FB012B600CB4D2D /* lh_ptri.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh_ptri.cpp; sourceTree = "<group>"; };
 		9D67938A1FB012B600CB4D2D /* lh_ptri.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lh_ptri.hpp; sourceTree = "<group>"; };
 		9D67938C1FB019F400CB4D2D /* lh_type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lh_type.h; sourceTree = "<group>"; };
+		9D67939F1FB2BC2300CB4D2D /* lh_usefont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lh_usefont.h; sourceTree = "<group>"; };
+		9D6793A01FB2BC2300CB4D2D /* lh_usefont.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lh_usefont.cpp; sourceTree = "<group>"; };
+		9D6793A11FB2BE9E00CB4D2D /* saveimg.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = saveimg.hpp; sourceTree = "<group>"; };
+		9D6793A21FB2BE9E00CB4D2D /* saveimg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = saveimg.cpp; sourceTree = "<group>"; };
 		9D6C68F21FAAF6AA002BA972 /* ftcontour.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ftcontour.cpp; sourceTree = "<group>"; };
 		9D6C68F31FAAF6AA002BA972 /* ftcontour.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ftcontour.hpp; sourceTree = "<group>"; };
 		9D6C68F41FAAF6AA002BA972 /* ftpoint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ftpoint.cpp; sourceTree = "<group>"; };
@@ -992,6 +996,10 @@
 				9D07E0D31FA086F900EEB94A /* glfw */,
 				9D07E0AF1FA0710400EEB94A /* poly2tri */,
 				9DD86A7C1F9F340D002934AE /* main.cpp */,
+				9D6793A01FB2BC2300CB4D2D /* lh_usefont.cpp */,
+				9D67939F1FB2BC2300CB4D2D /* lh_usefont.h */,
+				9D6793A21FB2BE9E00CB4D2D /* saveimg.cpp */,
+				9D6793A11FB2BE9E00CB4D2D /* saveimg.hpp */,
 				9DD86A891F9F5617002934AE /* lake.cpp */,
 				9DD86A8A1F9F5617002934AE /* lake.hpp */,
 				9DD86A8C1F9F58DC002934AE /* quad.cpp */,
