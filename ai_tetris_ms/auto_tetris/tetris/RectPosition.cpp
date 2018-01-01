@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "RectPosition.h"
 
 
@@ -12,7 +11,7 @@ RectPosition::~RectPosition()
 {
 }
 
-void RectPosition::setRect(RECT & rect) const
+void RectPosition::setRect(TERECT & rect) const
 {
 	rect.left = iLeftX;
 	rect.top = iLeftY;

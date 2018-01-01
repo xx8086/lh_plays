@@ -1,7 +1,7 @@
 #pragma once
 #ifndef TETRIS_CLASS
 #define TETRIS_CLASS
-
+#include "Windows.h"
 #include"GridPosition.h"
 /*
 * 类： 俄罗斯方块图形

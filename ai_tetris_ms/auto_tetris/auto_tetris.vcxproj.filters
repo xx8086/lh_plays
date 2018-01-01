@@ -13,15 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="头文件\class">
-      <UniqueIdentifier>{ca43b005-08bf-4558-b945-17e0e3a8f518}</UniqueIdentifier>
+    <Filter Include="tetris">
+      <UniqueIdentifier>{a21b36c1-29f8-4397-9566-08f887686fd4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\class">
-      <UniqueIdentifier>{9d4c355c-584d-49ab-ad16-27ea6837ad3c}</UniqueIdentifier>
+    <Filter Include="common">
+      <UniqueIdentifier>{8d62a825-c509-4e00-b49c-639d8ee1f196}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -36,20 +33,32 @@
     <ClInclude Include="autotetris.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>头文件\class</Filter>
+    <ClInclude Include="tetris\Score.h">
+      <Filter>tetris</Filter>
     </ClInclude>
-    <ClInclude Include="Tetris.h">
-      <Filter>头文件\class</Filter>
+    <ClInclude Include="tetris\tetri_type.h">
+      <Filter>tetris</Filter>
     </ClInclude>
-    <ClInclude Include="GridPosition.h">
-      <Filter>头文件\class</Filter>
+    <ClInclude Include="tetris\RectPosition.h">
+      <Filter>tetris</Filter>
     </ClInclude>
-    <ClInclude Include="RectPosition.h">
-      <Filter>头文件\class</Filter>
+    <ClInclude Include="tetris\Tetris.h">
+      <Filter>tetris</Filter>
     </ClInclude>
-    <ClInclude Include="class.h">
-      <Filter>头文件\class</Filter>
+    <ClInclude Include="tetris\Grid.h">
+      <Filter>tetris</Filter>
+    </ClInclude>
+    <ClInclude Include="tetris\GridPosition.h">
+      <Filter>tetris</Filter>
+    </ClInclude>
+    <ClInclude Include="common\Timer.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="tetris\TetrisManage.h">
+      <Filter>tetris</Filter>
+    </ClInclude>
+    <ClInclude Include="tetris\TetrtiAI.h">
+      <Filter>tetris</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -59,17 +68,29 @@
     <ClCompile Include="autotetris.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>源文件\class</Filter>
+    <ClCompile Include="tetris\Score.cpp">
+      <Filter>tetris</Filter>
     </ClCompile>
-    <ClCompile Include="Tetris.cpp">
-      <Filter>源文件\class</Filter>
+    <ClCompile Include="tetris\Tetris.cpp">
+      <Filter>tetris</Filter>
     </ClCompile>
-    <ClCompile Include="GridPosition.cpp">
-      <Filter>源文件\class</Filter>
+    <ClCompile Include="tetris\Grid.cpp">
+      <Filter>tetris</Filter>
     </ClCompile>
-    <ClCompile Include="RectPosition.cpp">
-      <Filter>源文件\class</Filter>
+    <ClCompile Include="tetris\GridPosition.cpp">
+      <Filter>tetris</Filter>
+    </ClCompile>
+    <ClCompile Include="tetris\RectPosition.cpp">
+      <Filter>tetris</Filter>
+    </ClCompile>
+    <ClCompile Include="common\Timer.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="tetris\TetrisManage.cpp">
+      <Filter>tetris</Filter>
+    </ClCompile>
+    <ClCompile Include="tetris\TetrtiAI.cpp">
+      <Filter>tetris</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

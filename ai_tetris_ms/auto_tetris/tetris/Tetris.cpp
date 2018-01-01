@@ -1,8 +1,8 @@
-#include "stdafx.h"
+
 #include "Tetris.h"
 #include <time.h>
 // 颜色
-CONST HBRUSH TETRIS_COLOR[] = 
+const HBRUSH TETRIS_COLOR[] = 
 {
 	(HBRUSH)GetStockObject(GRAY_BRUSH), // 默认颜色 灰色
 	CreateSolidBrush(RGB(255,255,0)),// 黄色
@@ -27,7 +27,7 @@ Tetris tetrisZ(2,0,3,0,4,1,4,1,5);// Z型
 Tetris tetrisRZ(2,0,5,0,4,1,4,1,3);// 反Z型
 Tetris tetrisT(2,0,4,1,3,1,4,1,5);// T字型
 
-CONST Tetris DEFAULT_TETRIS[] = 
+const Tetris DEFAULT_TETRIS[] = 
 {
 	tetrisLine,
 	tetrisRect,
@@ -127,7 +127,7 @@ void Tetris::rotate(int min_x, int max_x, int min_y, int max_y)
 	// TODO 越界处理
 	for (int i = 0; i < 4; i++)
 	{
-		BYTE x = positions[i].x, y = positions[i].y;
+		char x = positions[i].x, y = positions[i].y;
 		positions[i].x = y - positions[key].y + positions[key].x;
 		positions[i].y = positions[key].x + positions[key].y - x;
 	}
@@ -179,7 +179,7 @@ void Tetris::random()
 		positions[i] = tetris.positions[i];
 	}
 	key = tetris.key;
-	UINT times = getRandom(3);
+	unsigned int times = getRandom(3);
 	// 随机旋转0-3次
 	for (int i = 0 ; i < times; i++)
 	{

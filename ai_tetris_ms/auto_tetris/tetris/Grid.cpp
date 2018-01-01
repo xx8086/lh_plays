@@ -1,12 +1,12 @@
-#include "stdafx.h"
 #include "Grid.h"
 
 Grid::Grid() {};
-Grid::Grid(int row, int col)
+Grid::Grid(unsigned int row, unsigned int col)
 {
 	init(row,col);
 };
-VOID Grid::init(int row, int col)
+
+void Grid::init(unsigned int row, unsigned int col)
 {
 	grid.clear();
 	for (int i = 0; i < row; i++)
@@ -17,22 +17,24 @@ VOID Grid::init(int row, int col)
 }
 Grid::~Grid() {};
 // 重载下标运算
-ROWSPAN & Grid::operator [](int index)
+ROWSPAN & Grid::operator [](unsigned int index)
 {
 	return grid[index];
 }
 // 根据图形位置判断当前位置是否被占用
-BOOL Grid::isExist(Tetris tetris)
+bool Grid::isExist(Tetris tetris)
 {
-	for (int i = 0; i < 4; i++)
-	{
-		// 节点已经被占用
-		if (grid[tetris.positions[i].x][tetris.positions[i].y] > 0)
-		{
-			return true;
-		}
-	}
-	return false;
+    if (!grid.empty()) {
+        for (int i = 0; i < 4; i++)
+        {
+            // 节点已经被占用
+            if (grid[tetris.positions[i].x][tetris.positions[i].y] > 0)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 // 将当前图形坐标添加进网格
 void Grid::addCurTerisToGrid(Tetris tetris)
@@ -42,7 +44,7 @@ void Grid::addCurTerisToGrid(Tetris tetris)
 		grid[tetris.positions[i].x][tetris.positions[i].y] = tetris.color;
 	}
 }
-int Grid::lineStatus(int i )
+unsigned int Grid::lineStatus(unsigned int i )
 {
 	ROWSPAN::iterator it = grid[i].begin();
 	while (it < grid[i].end() - 1)
@@ -66,11 +68,11 @@ int Grid::lineStatus(int i )
 		it++;
 	}
 }
-int Grid::clearLine()
+unsigned int Grid::clearLine()
 {
-	int  status , clearline = 0;
+    unsigned int  status , clearline = 0;
 	ROWSPAN row(10);
-	int size = grid.size();
+    int size = grid.size();
 	for (int i = size -1; i >= 0 ; i--)
 	{
 		status = lineStatus(i);
