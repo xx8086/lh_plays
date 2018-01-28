@@ -7,8 +7,8 @@
 int main()
 {
     CLhSSE lsse;
-    //lsse.runadd();
-    lsse.runmul();
+    lsse.runadd();
+    //lsse.runmul();
 
     return 0;
 }

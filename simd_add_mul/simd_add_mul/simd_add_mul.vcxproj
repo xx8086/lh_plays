@@ -23,7 +23,7 @@
     <ProjectGuid>{915924FA-A381-43A4-915F-7796C30CE4C4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>simd_add_mul</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
