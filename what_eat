@@ -1,0 +1,21 @@
+//
+//  what_eat.cpp
+//
+//  Created by liu on 2018/6/28.
+//  Copyright © 2018年 hanliu. All rights reserved.
+//
+
+#include <iostream>
+#include <random>
+int main(int argc, const char * argv[]) {
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(0,4);
+
+    int what_eat[4] = {0};
+    for(int i = 0; i < 1000; i++){
+        what_eat[distribution(generator)]++;
+    }
+    printf("海鲜:%d\n西餐:%d\n蛙:%d\n火锅串串:%d\n",
+           what_eat[0], what_eat[1],what_eat[2],what_eat[3]);
+    return 0;
+}
