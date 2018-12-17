@@ -44,14 +44,15 @@ vec3 reflect(const vec3& v, const vec3& n) {
 
 vec3 random_in_unit_sphere() {
     vec3 p;
-	std::mt19937 e;	e.seed(std::random_device()());
-	std::uniform_real_distribution<double> ur(0.0, 1.0);
-    do {
-        p = 2.0*vec3(ur(e), ur(e), ur(e)) - vec3(1,1,1);
-    } while (p.squared_length() >= 1.0);
+	static std::uniform_real_distribution<double> ur(0.0, 1.0);
+	static std::mt19937 e;	e.seed(std::random_device()());
+	
+    //do {
+        //p = 2.0*vec3(ur(e), ur(e), ur(e)) - vec3(1,1,1);
+    //} while (p.squared_length() >= 1.0);
+	p = vec3(ur(e), ur(e), ur(e));
     return p;
 }
-
 
 class material  {
     public:
