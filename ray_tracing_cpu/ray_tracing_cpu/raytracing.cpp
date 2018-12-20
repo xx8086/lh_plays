@@ -27,7 +27,7 @@ vec3 raytracing::color(const ray& r, hitable *world, int depth) {
 	}
 }
 
-hitable* raytracing::heap_scene() {
+hitable_list* raytracing::heap_scene() {
 	int n = 500;
 	int rrond = 3;
 	hitable **list = new hitable*[n + 1];
@@ -57,7 +57,7 @@ hitable* raytracing::heap_scene() {
 	return new hitable_list(list, i);
 }
 
-hitable* raytracing::random_scene() {
+hitable_list* raytracing::random_scene() {
 	int n = 500;
 	int rrond = 11;
 	hitable **list = new hitable*[n + 1];
@@ -106,7 +106,7 @@ void raytracing::release() {
 void raytracing::make_sphere() {
 	release();
 
-# if 1
+# if 0
 	hitable** list = new hitable*[4];
 	float R = cos(M_PI / 4);
 	list[0] = new sphere(vec3(0, 2, 12), 0.5, new lambertian(vec3(0.1, 0.2, 0.5)));
@@ -115,22 +115,20 @@ void raytracing::make_sphere() {
 	list[3] = new sphere(vec3(-1, 2, 9), 0.5, new dielectric(1.5));
 	_world = new hitable_list(list, 4);
 #else
-	//_world = random_scene();// i7 12线程 179.373s
-	_world = heap_scene();// i7 12线程 50.4867s
+	_world = random_scene();// i7 12线程 179.373s
+	//_world = heap_scene();// i7 12线程 50.4867s
 #endif
 								   //vec3 lookfrom(13, 2, 3);
-	vec3 lookfrom(0, 3, 15);
-	vec3 lookat(0, 0, 0);
-	float dist_to_focus = 9.0;
+	vec3 lookfrom(0.0f, 3.0f, 15.0f);
+	vec3 lookat(0.0f, 0.0f, 0.0f);
+	float dist_to_focus = 9.0f;
 	float aperture = 0.1f;
-	int nx = 1200;
-	int ny = 900;
-	_datas = new unsigned char[nx*ny * 3];
-	_cam.set_camera(lookfrom, lookat, vec3(0, 1, 0), 60, float(nx) / float(ny), aperture, dist_to_focus);
+	_datas = new unsigned char[_nx * _ny * 3];
+	_cam.set_camera(lookfrom, lookat, vec3(0.0f, 1.0f, 0.0f), 60.0f, float(_nx) / float(_ny), aperture, dist_to_focus);
 
 }
 
-void raytracing::run() {
+void raytracing::run(const int main_thread_loop_polling_time_ms) {
 	const int thread_num = 4;
 	std::thread threads[thread_num];
 	for (int i = 0; i < thread_num; i++) {
@@ -139,13 +137,13 @@ void raytracing::run() {
 	}
 
 	for (auto & th : threads) {
-		th.detach();
+			th.detach();
 	}
 
 	using namespace std::chrono_literals;
 	auto start = std::chrono::high_resolution_clock::now();
 
-	std::chrono::milliseconds dura(2000);
+	std::chrono::milliseconds dura(main_thread_loop_polling_time_ms);
 	while (_ready != _complete) {
 		std::this_thread::sleep_for(dura);
 	}
@@ -173,7 +171,7 @@ void raytracing::draw_image(raytracing* self, hitable *world, unsigned char* dat
 	for (int j = line_begin; j <= line_end; j++) {
 		//for (int j = line_end; j >= line_begin; j--) {
 		for (int i = 0; i < nx; i++) {
-			vec3 col(0, 0, 0);
+			vec3 col(0.0f, 0.0f, 0.0f);
 			for (int s = 0; s < ns; s++) {
 				float u = float(i + ur(e)) * fnx;
 				float v = float(j + ur(e)) * fny;

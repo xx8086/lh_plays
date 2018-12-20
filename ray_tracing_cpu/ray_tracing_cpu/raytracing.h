@@ -12,17 +12,18 @@
 #include "stb_image_write.h"
 #include "stb_image.h"
 
+
 class raytracing{
 public:
 	raytracing();
 	~raytracing();
 public:
 	void make_sphere();
-	void run();
+	void run(const int main_thread_loop_polling_time_ms = 2000);
 
 private:
-	hitable * random_scene();
-	hitable * heap_scene();
+	hitable_list * random_scene();
+	hitable_list * heap_scene();
 
 private:
 	void release();
